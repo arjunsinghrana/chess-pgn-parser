@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "chessMove.h"
 #include "chessPiece.h"
+#include "chessTurn.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ public:
 
     void setChessPiece(int row, int col, ChessPiece piece);
 
-    void applyMove(ChessMove move);
+    void applyTurn(ChessTurn turn);
 };
 
 #endif // CHESSBOARD_H
