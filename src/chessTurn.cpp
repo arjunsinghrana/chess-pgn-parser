@@ -7,10 +7,10 @@ ChessTurn::ChessTurn(int turn, ChessMove white, ChessMove black)
 
 void ChessTurn::display()
 {
-    cout << "ChessTurn: " << turnNumber << ",";
+    cout << "ChessTurn: " << turnNumber << ", ";
     cout << "White Move: ";
     whiteMove.display();
-    cout << "Black Move: ";
+    cout << ", Black Move: ";
     blackMove.display();
     cout << endl;
 }
