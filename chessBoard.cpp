@@ -14,7 +14,7 @@ ChessBoard::ChessBoard()
     reset();
 }
 
-void ChessBoard::print()
+void ChessBoard::print() const
 {
     vector<vector<ChessPiece> > boardCopy = board;
     Utils::rotate180(boardCopy);

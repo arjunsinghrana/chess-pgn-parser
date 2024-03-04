@@ -18,7 +18,7 @@ public:
     ChessBoard();
 
     void reset();
-    void print();
+    void print() const;
 
     void setChessPiece(int row, int col, ChessPiece piece);
 };
