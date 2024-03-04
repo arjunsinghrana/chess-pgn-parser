@@ -43,8 +43,8 @@ void ChessBoard::reset()
     setChessPiece(0, 0, WHITE_ROOK);
     setChessPiece(0, 1, WHITE_KNIGHT);
     setChessPiece(0, 2, WHITE_BISHOP);
-    setChessPiece(0, 3, WHITE_QUEEN);
-    setChessPiece(0, 4, WHITE_KING);
+    setChessPiece(0, 3, WHITE_KING);
+    setChessPiece(0, 4, WHITE_QUEEN);
     setChessPiece(0, 5, WHITE_BISHOP);
     setChessPiece(0, 6, WHITE_KNIGHT);
     setChessPiece(0, 7, WHITE_ROOK);
@@ -61,8 +61,8 @@ void ChessBoard::reset()
     setChessPiece(7, 0, BLACK_ROOK);
     setChessPiece(7, 1, BLACK_KNIGHT);
     setChessPiece(7, 2, BLACK_BISHOP);
-    setChessPiece(7, 3, BLACK_QUEEN);
-    setChessPiece(7, 4, BLACK_KING);
+    setChessPiece(7, 3, BLACK_KING);
+    setChessPiece(7, 4, BLACK_QUEEN);
     setChessPiece(7, 5, BLACK_BISHOP);
     setChessPiece(7, 6, BLACK_KNIGHT);
     setChessPiece(7, 7, BLACK_ROOK);

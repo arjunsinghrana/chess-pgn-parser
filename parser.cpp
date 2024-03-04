@@ -3,9 +3,9 @@
 #include <sstream>
 #include <vector>
 
-#include "chessBoard.h"
-#include "chessMove.h"
-#include "utils.h"
+#include "src/chessBoard.h"
+#include "src/chessMove.h"
+#include "src/utils.h"
 
 using namespace std;
 
