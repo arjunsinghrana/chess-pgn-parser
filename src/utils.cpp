@@ -45,10 +45,6 @@ string Utils::removeSubstringWithNumberAndThreeDots(const string& input) {
 ChessMove Utils::parseSANMove(string& san)
 {
     ChessMove move;
-    move.isCapture = false;
-    move.isCheck = false;
-    move.isCheckmate = false;
-    move.isCastling = false;
 
     // Capture
     if (san.find("x") != string::npos) {

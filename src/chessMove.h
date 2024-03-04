@@ -7,15 +7,15 @@ using namespace std;
 
 struct ChessMove 
 {
-    char piece;
-    char sourceFile;
-    char sourceRank;
-    char destinationFile;
-    char destinationRank;
-    bool isCapture;
-    bool isCheck;
-    bool isCheckmate;
-    bool isCastling;
+    char piece = '?';
+    char sourceFile = '?';
+    char sourceRank = '?';
+    char destinationFile = '?';
+    char destinationRank = '?';
+    bool isCapture = false;
+    bool isCheck = false;
+    bool isCheckmate = false;
+    bool isCastling = false;
     
     // Display contents of class
     void display();

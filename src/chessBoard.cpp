@@ -77,7 +77,7 @@ void ChessBoard::reset()
     setChessPiece(6, 7, BLACK_PAWN);
 }
 
-void ChessBoard::applyMove(ChessMove move)
+void ChessBoard::applyTurn(ChessTurn turn)
 {
     
 }
