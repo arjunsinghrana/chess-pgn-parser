@@ -5,6 +5,7 @@
 
 #include "chessMove.h"
 #include "chessPiece.h"
+#include "chessTurn.h"
 
 using namespace std;
 
@@ -14,7 +15,8 @@ public:
     static string removeSubstringInCurlyBrackets(const string& input);
     static string removeSubstringWithNumberAndThreeDots(const string& input);
 
-    static vector<ChessMove> parseChessMoves(const string& line);
+    static vector<ChessTurn> parseChessMoves(const string& line);
+    static ChessMove parseSANMove(string& moveStr);
 
     static string pieceToString(ChessPiece piece);
 

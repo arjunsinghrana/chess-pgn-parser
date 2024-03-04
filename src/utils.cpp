@@ -42,16 +42,16 @@ string Utils::removeSubstringWithNumberAndThreeDots(const string& input) {
     return result.str();
 }
 
-vector<ChessMove> Utils::parseChessMoves(const string& input)
+vector<ChessTurn> Utils::parseChessMoves(const string& input)
 {
     string parsedLine;
     parsedLine = Utils::removeSubstringInCurlyBrackets(input);
     parsedLine = Utils::removeSubstringWithNumberAndThreeDots(parsedLine);
 
-    vector<ChessMove> moves;
+    vector<ChessTurn> turns;
 
     bool newMove = false;
-    int currentMove = -1;
+    int turnNumber = -1;
 
     string word;
     stringstream ss(parsedLine);
@@ -60,7 +60,7 @@ vector<ChessMove> Utils::parseChessMoves(const string& input)
         if (!newMove && isdigit(word[0]))
         {
             newMove = true;
-            currentMove = stoi(word.substr(0, word.size() - 1));
+            turnNumber = stoi(word.substr(0, word.size() - 1));
         }
 
         string whiteMove;
@@ -70,17 +70,71 @@ vector<ChessMove> Utils::parseChessMoves(const string& input)
             ss >> whiteMove;
             ss >> blackMove;
 
-            ChessMove move(currentMove, whiteMove, blackMove);
-            move.display();
+            ChessTurn turn(turnNumber, parseSANMove(whiteMove), parseSANMove(blackMove));
+            turn.display();
 
-            moves.push_back(move);
+            turns.push_back(turn);
 
             newMove = false;
         }
         
     }
 
-    return moves;
+    return turns;
+}
+
+ChessMove Utils::parseSANMove(string& san)
+{
+    ChessMove move;
+    move.isCapture = false;
+    move.isCheck = false;
+    move.isCheckmate = false;
+    move.isCastling = false;
+
+    // Capture
+    if (san.find("x") != string::npos) {
+        move.isCapture = true;
+    }
+
+    // Checkmate
+    if (san.find("#") != string::npos) {
+        move.isCheckmate = true;
+    }
+
+    // Check
+    if (san.find("+") != string::npos && !move.isCheckmate) {
+        move.isCheck = true;
+    }
+
+    // Castling
+    if (san == "O-O" || san == "O-O-O") {
+        move.isCastling = true;
+        return move;
+    }
+
+    // Upper case letters denote pieces
+    if (isupper(san[0])) {
+        move.piece = san[0];
+        san = san.substr(1); // Remove piece from the SAN string
+    } else {
+        move.piece = 'P'; // Assume it's a pawn if no piece is specified
+    }
+
+    // Parsing the destination square
+    move.destinationFile = san[san.length() - 2];
+    move.destinationRank = san[san.length() - 1];
+
+    // Parsing the source square if provided
+    if (san.length() >= 3) {
+        if (isalpha(san[0])) {
+            move.sourceFile = san[0];
+        }
+        if (isdigit(san[1])) {
+            move.sourceRank = san[1];
+        }
+    }
+
+    return move;
 }
 
 void Utils::rotate90(vector<vector<ChessPiece> >& board)
