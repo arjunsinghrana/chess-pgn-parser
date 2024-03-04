@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "src/chessBoard.h"
-#include "src/chessMove.h"
+#include "src/chessTurn.h"
 #include "src/utils.h"
 
 using namespace std;
@@ -32,8 +32,20 @@ int main(int argc, char* argv[])
     bool found = false;
     while (getline(file, line)) 
     {
+        // Skip empty lines
+        if (line.empty())
+        {
+            continue;
+        }
+
+        // Skip tag pairs
+        if (line[0] == '[')
+        {
+            continue;
+        }
+
         // Filter out lines that are not moves
-        if (!line.empty() && isdigit(line[0]))
+        if (isdigit(line[0]))
         {
             found = true;
             break;
@@ -58,7 +70,8 @@ int main(int argc, char* argv[])
         }
     }
 
-    vector<ChessMove> moves = Utils::parseChessMoves(ss.str());
+    // Convert string containing Move Text into vector of Chess Moves
+    vector<ChessTurn> turns = Utils::parseChessMoves(ss.str());
 
     ChessBoard board;
     board.print();

@@ -76,3 +76,8 @@ void ChessBoard::reset()
     setChessPiece(6, 6, BLACK_PAWN);
     setChessPiece(6, 7, BLACK_PAWN);
 }
+
+void ChessBoard::applyMove(ChessMove move)
+{
+    
+}

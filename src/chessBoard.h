@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "chessMove.h"
 #include "chessPiece.h"
 
 using namespace std;
@@ -21,6 +22,8 @@ public:
     void print() const;
 
     void setChessPiece(int row, int col, ChessPiece piece);
+
+    void applyMove(ChessMove move);
 };
 
 #endif // CHESSBOARD_H
