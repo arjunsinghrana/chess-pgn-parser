@@ -1,22 +1,23 @@
 #ifndef CHESSMOVE_H
 #define CHESSMOVE_H
 
-#include <iostream>
+#include <string>
 
 using namespace std;
 
-class ChessMove 
+struct ChessMove 
 {
-private:
-    int moveNumber;
-    string whiteMove;
-    string blackMove;
-
-public:
-    // Constructor
-    ChessMove(int moveNum, const string& white, const string& black);
-
-    // Print contents of class
+    char piece;
+    char sourceFile;
+    char sourceRank;
+    char destinationFile;
+    char destinationRank;
+    bool isCapture;
+    bool isCheck;
+    bool isCheckmate;
+    bool isCastling;
+    
+    // Display contents of class
     void display();
 };
 

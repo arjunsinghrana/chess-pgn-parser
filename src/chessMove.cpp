@@ -1,11 +1,17 @@
 #include "chessMove.h"
 
-using namespace std;
+#include <iostream>
 
-ChessMove::ChessMove(int moveNum, const string& white, const string& black) 
-: moveNumber(moveNum), whiteMove(white), blackMove(black) {}
+using namespace std;
 
 void ChessMove::display() 
 {
-    cout << "Move " << moveNumber << ": " << whiteMove << " " << blackMove << endl;
+    cout << "ChessMove: {";
+    cout << "Piece: " << piece << ", ";
+    cout << "Source Square: " << sourceFile << sourceRank << ", ";
+    cout << "Destination Square: " << destinationFile << destinationRank << ", ";
+    cout << "Is Capture? " << (isCapture ? "Yes" : "No") << ", ";
+    cout << "Is Check? " << (isCheck ? "Yes" : "No") << ", ";
+    cout << "Is Checkmate? " << (isCheckmate ? "Yes" : "No") << ", ";
+    cout << "Is Castling? " << (isCastling ? "Yes" : "No") << "}" << endl;
 }
