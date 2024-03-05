@@ -8,6 +8,11 @@ struct ChessPiece
 {
     Color color;
     Piece piece;
+
+    bool operator==(const ChessPiece& other) const
+    {
+        return color == other.color && piece == other.piece;
+    }
 };
 
 #endif // CHESSPIECE_H

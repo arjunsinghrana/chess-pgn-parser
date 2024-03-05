@@ -78,11 +78,19 @@ void ChessBoard::applyTurn(ChessTurn turn)
 {
     if (turn.whiteMove.piece == Piece::PAWN)
     {   
-        int row = turn.whiteMove.destinationFile - 'a';
-        cout << row;
-        int col = BOARD_SIZE - (turn.whiteMove.destinationRank - '0');
-        cout << col;
-        cout << endl;
-        board[col][row] = {Color::WHITE, Piece::PAWN};
+        ChessPiece piece = {Color::WHITE, Piece::PAWN};
+
+        int row = BOARD_SIZE - (turn.whiteMove.destinationRank - '0');
+        int col = turn.whiteMove.destinationFile - 'a';
+
+        for (int i = BOARD_SIZE - 1; i >= 0; --i)
+        {
+            if (board[i][col] == piece)
+            {
+                board[i][col] = {Color::EMPTY, Piece::EMPTY};
+            }
+        }
+
+        board[row][col] = piece;
     }
 }
