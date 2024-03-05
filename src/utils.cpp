@@ -213,28 +213,3 @@ string Utils::chessPieceToString(const ChessPiece& chessPiece)
 {
     return colorToString(chessPiece.color) + pieceToString(chessPiece.piece);
 }
-
-void Utils::rotate90(vector<vector<ChessPiece>>& board)
-{
-    int N = board.size();
-
-    // Transpose the matrix
-    for (int i = 0; i < N; ++i) {
-        for (int j = i; j < N; ++j) {
-            swap(board[i][j], board[j][i]);
-        }
-    }
-    
-    // Reverse each row
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N / 2; ++j) {
-            swap(board[i][j], board[i][N - 1 - j]);
-        }
-    }
-}
-
-void Utils::rotate180(vector<vector<ChessPiece>>& board)
-{
-    rotate90(board);
-    rotate90(board);
-}

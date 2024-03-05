@@ -25,9 +25,6 @@ public:
     static string colorToString(const Color& color);
 
     static string chessPieceToString(const ChessPiece& chessPiece);
-
-    static void rotate90(vector<vector<ChessPiece>>& board);
-    static void rotate180(vector<vector<ChessPiece>>& board);
 };
 
 #endif // UTILS_H
