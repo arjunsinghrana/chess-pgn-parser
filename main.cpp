@@ -76,6 +76,7 @@ int main(int argc, char* argv[])
     ChessBoard board;
     for (const auto& turn : turns)
     {
+        turn.display();
         board.applyTurn(turn);
         board.print();
     }

@@ -15,6 +15,8 @@ private:
     const int BOARD_SIZE = 8;
     vector<vector<ChessPiece>> board;
 
+    bool validPosition(int row, int col);
+
     void applyWhiteMove(ChessMove whiteMove);
     void applyBlackMove(ChessMove blackMove);
 
@@ -25,6 +27,9 @@ private:
 
     void applyMoveForWhitePawn(ChessMove chessMove);
     void applyMoveForBlackPawn(ChessMove chessMove);
+
+    void applyMoveForKnight(Color color, ChessMove chessMove);
+    void applyMoveForBishop(Color color, ChessMove chessMove);
 
 public:
     ChessBoard();

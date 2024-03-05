@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void ChessMove::display() 
+void ChessMove::display() const
 {
     cout << "ChessMove: {";
     cout << "Piece: " << Utils::pieceToString(piece) << ", ";

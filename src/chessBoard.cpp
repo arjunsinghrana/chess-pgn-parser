@@ -24,6 +24,7 @@ void ChessBoard::print() const
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 void ChessBoard::setChessPiece(int row, int col, ChessPiece piece)
@@ -94,6 +95,10 @@ void ChessBoard::applyWhiteMove(ChessMove whiteMove)
     {
         applyMoveForWhitePawn(whiteMove);
     }
+    else if (Piece::KNIGHT == whiteMove.piece)
+    {
+        applyMoveForKnight(Color::WHITE, whiteMove);
+    }
 
 }
 
@@ -106,6 +111,10 @@ void ChessBoard::applyBlackMove(ChessMove blackMove)
     else if (Piece::PAWN == blackMove.piece)
     {
         applyMoveForBlackPawn(blackMove);
+    }
+    else if (Piece::KNIGHT == blackMove.piece)
+    {
+        applyMoveForKnight(Color::BLACK, blackMove);
     }
 }
 
@@ -165,6 +174,48 @@ void ChessBoard::applyMoveForBlackPawn(ChessMove chessMove)
         board[i][col] = {Color::EMPTY, Piece::EMPTY};
         board[row][col] = chessPiece;
     }
+}
+
+void ChessBoard::applyMoveForKnight(Color color, ChessMove chessMove)
+{
+    ChessPiece chessPiece = {color, Piece::KNIGHT};
+
+    int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
+
+    int moves[8][2] = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+                    {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+
+    int old_col = -1;
+    int old_row = -1;
+    bool found = false;
+    for (int i = 0; i < 8; i++)
+    {
+        old_col = col + moves[i][0];
+        old_row = row + moves[i][1];
+
+        if (validPosition(old_row, old_col) && chessPiece == board[old_row][old_col])
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
+        board[row][col] = chessPiece;
+    }
+}
+
+void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
+{
+
+}
+
+bool ChessBoard::validPosition(int row, int col)
+{
+    return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
 }
 
 void ChessBoard::applyTurn(ChessTurn turn)

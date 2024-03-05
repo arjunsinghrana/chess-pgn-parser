@@ -20,7 +20,7 @@ struct ChessMove
     bool isCastling = false;
     
     // Display contents of class
-    void display();
+    void display() const;
 };
 
 #endif // CHESSMOVE_H

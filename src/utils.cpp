@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -44,6 +45,8 @@ string Utils::removeSubstringWithNumberAndThreeDots(const string& input) {
 
 ChessMove Utils::parseSANMove(string& san)
 {
+    // cout << "san: " << san << endl;
+
     ChessMove move;
 
     // Capture
@@ -69,8 +72,10 @@ ChessMove Utils::parseSANMove(string& san)
 
     // Upper case letters denote pieces
     if (isupper(san[0])) {
+        // cout << "san: " << san << endl;
         move.piece = charToPiece(san[0]);
         san = san.substr(1); // Remove piece from the SAN string
+        // cout << "san: " << san << endl;
     } else {
         move.piece = charToPiece('P'); // Assume it's a pawn if no piece is specified
     }
@@ -94,9 +99,12 @@ ChessMove Utils::parseSANMove(string& san)
 
 vector<ChessTurn> Utils::parseChessMoves(const string& input)
 {
+    // cout << "input" << input << endl;
     string parsedLine;
     parsedLine = Utils::removeSubstringInCurlyBrackets(input);
+    // cout << "parsedLine: " << parsedLine << endl;
     parsedLine = Utils::removeSubstringWithNumberAndThreeDots(parsedLine);
+    // cout << "parsedLine: " << parsedLine << endl;
 
     vector<ChessTurn> turns;
 
@@ -121,8 +129,6 @@ vector<ChessTurn> Utils::parseChessMoves(const string& input)
             ss >> blackMove;
 
             ChessTurn turn(turnNumber, parseSANMove(whiteMove), parseSANMove(blackMove));
-            turn.display();
-
             turns.push_back(turn);
 
             newMove = false;
