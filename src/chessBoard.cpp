@@ -99,6 +99,10 @@ void ChessBoard::applyWhiteMove(ChessMove whiteMove)
     {
         applyMoveForKnight(Color::WHITE, whiteMove);
     }
+    else if (Piece::BISHOP == whiteMove.piece)
+    {
+        applyMoveForBishop(Color::WHITE, whiteMove);
+    }
 
 }
 
@@ -115,6 +119,10 @@ void ChessBoard::applyBlackMove(ChessMove blackMove)
     else if (Piece::KNIGHT == blackMove.piece)
     {
         applyMoveForKnight(Color::BLACK, blackMove);
+    }
+    else if (Piece::BISHOP == blackMove.piece)
+    {
+        applyMoveForBishop(Color::BLACK, blackMove);
     }
 }
 
@@ -210,7 +218,51 @@ void ChessBoard::applyMoveForKnight(Color color, ChessMove chessMove)
 
 void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
 {
+    ChessPiece chessPiece = {color, Piece::BISHOP};
 
+    int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
+
+    int directions[4][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+
+    int old_col = -1;
+    int old_row = -1;
+    bool found = false;
+
+    for (int i = 0; i < 4; i++)
+    {
+        old_col = col;
+        old_row = row;
+
+        while (true)
+        {
+            old_col += directions[i][0];
+            old_row += directions[i][1];
+
+            if (!validPosition(old_row, old_col))
+            {
+                break;
+            }
+
+            if (chessPiece == board[old_row][old_col])
+            {
+                cout << "old row and old col for bishop: " << old_row << " " << old_col << endl;
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
+        board[row][col] = chessPiece;
+    }
 }
 
 bool ChessBoard::validPosition(int row, int col)
