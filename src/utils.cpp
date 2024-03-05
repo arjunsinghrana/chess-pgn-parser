@@ -69,10 +69,10 @@ ChessMove Utils::parseSANMove(string& san)
 
     // Upper case letters denote pieces
     if (isupper(san[0])) {
-        move.piece = san[0];
+        move.piece = charToPiece(san[0]);
         san = san.substr(1); // Remove piece from the SAN string
     } else {
-        move.piece = 'P'; // Assume it's a pawn if no piece is specified
+        move.piece = charToPiece('P'); // Assume it's a pawn if no piece is specified
     }
 
     // Parsing the destination square
@@ -164,29 +164,29 @@ string Utils::pieceToString(const Piece& piece)
     }
 }
 
-Piece Utils::stringToPiece(const string& piece)
+Piece Utils::charToPiece(char piece)
 {
-    if (piece == "P")
+    if (piece == 'P')
     {
         return Piece::PAWN;
     }
-    else if (piece == "R")
+    else if (piece == 'R')
     {
         return Piece::ROOK;
     }
-    else if (piece == "N")
+    else if (piece == 'N')
     {
         return Piece::KNIGHT;
     }
-    else if (piece == "B")
+    else if (piece == 'B')
     {
         return Piece::BISHOP;
     }
-    else if (piece == "Q")
+    else if (piece == 'Q')
     {
         return Piece::QUEEN;
     }
-    else if (piece == "K")
+    else if (piece == 'K')
     {
         return Piece::KING;
     }

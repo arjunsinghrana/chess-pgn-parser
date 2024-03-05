@@ -1,5 +1,7 @@
 #include "chessMove.h"
 
+#include "utils.h"
+
 #include <iostream>
 
 using namespace std;
@@ -7,7 +9,7 @@ using namespace std;
 void ChessMove::display() 
 {
     cout << "ChessMove: {";
-    cout << "Piece: " << piece << ", ";
+    cout << "Piece: " << Utils::pieceToString(piece) << ", ";
     cout << "Source Square: " << sourceFile << sourceRank << ", ";
     cout << "Destination Square: " << destinationFile << destinationRank << ", ";
     cout << "Is Capture? " << (isCapture ? "Yes" : "No") << ", ";

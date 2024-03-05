@@ -20,7 +20,7 @@ public:
     static vector<ChessTurn> parseChessMoves(const string& line);
 
     static string pieceToString(const Piece& piece);
-    static Piece stringToPiece(const string& piece);
+    static Piece charToPiece(char piece);
 
     static string colorToString(const Color& color);
 

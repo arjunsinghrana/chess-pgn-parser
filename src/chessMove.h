@@ -3,11 +3,13 @@
 
 #include <string>
 
+#include "chessPiece.h"
+
 using namespace std;
 
 struct ChessMove 
 {
-    char piece = '?';
+    Piece piece = Piece::EMPTY;
     char sourceFile = '?';
     char sourceRank = '?';
     char destinationFile = '?';
