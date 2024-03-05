@@ -1,21 +1,13 @@
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
-enum ChessPiece
+enum class Color { EMPTY, WHITE, BLACK };
+enum class Piece { EMPTY, PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING };
+
+struct ChessPiece
 {
-    EMPTY,
-    WHITE_PAWN,
-    WHITE_ROOK,
-    WHITE_KNIGHT,
-    WHITE_BISHOP,
-    WHITE_QUEEN,
-    WHITE_KING,
-    BLACK_PAWN,
-    BLACK_ROOK,
-    BLACK_KNIGHT,
-    BLACK_BISHOP,
-    BLACK_QUEEN,
-    BLACK_KING
+    Color color;
+    Piece piece;
 };
 
 #endif // CHESSPIECE_H

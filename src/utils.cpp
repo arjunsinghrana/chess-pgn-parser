@@ -133,57 +133,88 @@ vector<ChessTurn> Utils::parseChessMoves(const string& input)
     return turns;
 }
 
-string Utils::pieceToString(const ChessPiece& piece)
+string Utils::pieceToString(const Piece& piece)
 {
     switch (piece)
     {
-    case EMPTY:
+    case Piece::EMPTY:
         return "  ";
         break;
-    case WHITE_PAWN:
-        return "wP";
+    case Piece::PAWN:
+        return "P";
         break;
-    case WHITE_ROOK:
-        return "wR";
+    case Piece::ROOK:
+        return "R";
         break;
-    case WHITE_KNIGHT:
-        return "wN";
+    case Piece::KNIGHT:
+        return "N";
         break;
-    case WHITE_BISHOP:
-        return "wB";
+    case Piece::BISHOP:
+        return "B";
         break;
-    case WHITE_QUEEN:
-        return "wQ";
+    case Piece::QUEEN:
+        return "Q";
         break;
-    case WHITE_KING:
-        return "wK";
+    case Piece::KING:
+        return "K";
         break;
-    case BLACK_PAWN:
-        return "bP";
-        break;
-    case BLACK_ROOK:
-        return "bR";
-        break;
-    case BLACK_KNIGHT:
-        return "bN";
-        break;
-    case BLACK_BISHOP:
-        return "bB";
-        break;
-    case BLACK_QUEEN:
-        return "bQ";
-        break;
-    case BLACK_KING:
-        return "bK";
-        break;
-    
-    default:
-        return "??";
+    default: 
+        return "";
         break;
     }
 }
 
-void Utils::rotate90(vector<vector<ChessPiece> >& board)
+Piece Utils::stringToPiece(const string& piece)
+{
+    if (piece == "P")
+    {
+        return Piece::PAWN;
+    }
+    else if (piece == "R")
+    {
+        return Piece::ROOK;
+    }
+    else if (piece == "N")
+    {
+        return Piece::KNIGHT;
+    }
+    else if (piece == "B")
+    {
+        return Piece::BISHOP;
+    }
+    else if (piece == "Q")
+    {
+        return Piece::QUEEN;
+    }
+    else if (piece == "K")
+    {
+        return Piece::KING;
+    }
+    else 
+    {
+        return Piece::EMPTY;
+    }
+}
+
+string Utils::colorToString(const Color& color)
+{
+    switch (color)
+    {
+        case Color::WHITE: 
+            return "w";
+        case Color::BLACK:
+            return "b";
+        default:
+            return "";
+    }
+}
+
+string Utils::chessPieceToString(const ChessPiece& chessPiece)
+{
+    return colorToString(chessPiece.color) + pieceToString(chessPiece.piece);
+}
+
+void Utils::rotate90(vector<vector<ChessPiece>>& board)
 {
     int N = board.size();
 
@@ -202,7 +233,7 @@ void Utils::rotate90(vector<vector<ChessPiece> >& board)
     }
 }
 
-void Utils::rotate180(vector<vector<ChessPiece> >& board)
+void Utils::rotate180(vector<vector<ChessPiece>>& board)
 {
     rotate90(board);
     rotate90(board);

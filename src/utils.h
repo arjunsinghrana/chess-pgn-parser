@@ -19,10 +19,15 @@ public:
     static ChessMove parseSANMove(string& san);
     static vector<ChessTurn> parseChessMoves(const string& line);
 
-    static string pieceToString(const ChessPiece& piece);
+    static string pieceToString(const Piece& piece);
+    static Piece stringToPiece(const string& piece);
 
-    static void rotate90(vector<vector<ChessPiece> >& board);
-    static void rotate180(vector<vector<ChessPiece> >& board);
+    static string colorToString(const Color& color);
+
+    static string chessPieceToString(const ChessPiece& chessPiece);
+
+    static void rotate90(vector<vector<ChessPiece>>& board);
+    static void rotate180(vector<vector<ChessPiece>>& board);
 };
 
 #endif // UTILS_H

@@ -74,7 +74,11 @@ int main(int argc, char* argv[])
     vector<ChessTurn> turns = Utils::parseChessMoves(ss.str());
 
     ChessBoard board;
-    board.print();
+    for (const auto& turn : turns)
+    {
+        board.applyTurn(turn);
+        board.print();
+    }
 
     return 0;
 }

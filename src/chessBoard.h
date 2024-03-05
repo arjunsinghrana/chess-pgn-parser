@@ -13,7 +13,7 @@ class ChessBoard
 {
 private:
     const int BOARD_SIZE = 8;
-    vector<vector<ChessPiece> > board;
+    vector<vector<ChessPiece>> board;
 
 public:
     ChessBoard();
