@@ -15,6 +15,17 @@ private:
     const int BOARD_SIZE = 8;
     vector<vector<ChessPiece>> board;
 
+    void applyWhiteMove(ChessMove whiteMove);
+    void applyBlackMove(ChessMove blackMove);
+
+    int rankToRow(char rank);
+    int fileToCol(char file);
+
+    void applyMoveWithSourceFileAndRank(ChessMove chessMove);
+
+    void applyMoveForWhitePawn(ChessMove chessMove);
+    void applyMoveForBlackPawn(ChessMove chessMove);
+
 public:
     ChessBoard();
 

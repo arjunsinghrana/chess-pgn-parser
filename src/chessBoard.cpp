@@ -74,23 +74,101 @@ void ChessBoard::reset()
     setChessPiece(1, 7, {Color::BLACK, Piece::PAWN});
 }
 
+int ChessBoard::rankToRow(char rank)
+{
+    return BOARD_SIZE - (rank- '0');
+}
+
+int ChessBoard::fileToCol(char file)
+{
+    return file - 'a';
+}
+
+void ChessBoard::applyWhiteMove(ChessMove whiteMove)
+{
+    if (whiteMove.sourceFile != '?' && whiteMove.sourceRank != '?')
+    {
+        applyMoveWithSourceFileAndRank(whiteMove);
+    }
+    else if (Piece::PAWN == whiteMove.piece)
+    {
+        applyMoveForWhitePawn(whiteMove);
+    }
+
+}
+
+void ChessBoard::applyBlackMove(ChessMove blackMove)
+{
+    if (blackMove.sourceFile != '?' && blackMove.sourceRank != '?')
+    {
+        applyMoveWithSourceFileAndRank(blackMove);
+    } 
+    else if (Piece::PAWN == blackMove.piece)
+    {
+        applyMoveForBlackPawn(blackMove);
+    }
+}
+
+void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
+{
+    ChessPiece chessPiece = board[rankToRow(chessMove.sourceRank)][fileToCol(chessMove.sourceFile)];
+    board[rankToRow(chessMove.destinationRank)][fileToCol(chessMove.destinationFile)] = chessPiece;
+
+    board[rankToRow(chessMove.sourceRank)][fileToCol(chessMove.sourceFile)] = {Color::EMPTY, Piece::EMPTY};
+}
+
+void ChessBoard::applyMoveForWhitePawn(ChessMove chessMove)
+{
+    ChessPiece chessPiece = {Color::WHITE, Piece::PAWN};
+
+    int row = rankToRow(chessMove.destinationRank);
+    int col = fileToCol(chessMove.destinationFile);
+
+    bool found = false;
+    int i = 0;
+    for (; !found && i < BOARD_SIZE; i++)
+    {
+        if (chessPiece == board[i][col])
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[i][col] = {Color::EMPTY, Piece::EMPTY};
+        board[row][col] = chessPiece;
+    }
+}
+
+void ChessBoard::applyMoveForBlackPawn(ChessMove chessMove)
+{
+    ChessPiece chessPiece = {Color::BLACK, Piece::PAWN};
+
+    int row = rankToRow(chessMove.destinationRank);
+    int col = fileToCol(chessMove.destinationFile);
+
+    bool found = false;
+    int i = BOARD_SIZE - 1;
+    for (; !found && i >= 0; i--)
+    {
+        if (chessPiece == board[i][col])
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[i][col] = {Color::EMPTY, Piece::EMPTY};
+        board[row][col] = chessPiece;
+    }
+}
+
 void ChessBoard::applyTurn(ChessTurn turn)
 {
-    if (turn.whiteMove.piece == Piece::PAWN)
-    {   
-        ChessPiece piece = {Color::WHITE, Piece::PAWN};
-
-        int row = BOARD_SIZE - (turn.whiteMove.destinationRank - '0');
-        int col = turn.whiteMove.destinationFile - 'a';
-
-        for (int i = BOARD_SIZE - 1; i >= 0; --i)
-        {
-            if (board[i][col] == piece)
-            {
-                board[i][col] = {Color::EMPTY, Piece::EMPTY};
-            }
-        }
-
-        board[row][col] = piece;
-    }
+    applyWhiteMove(turn.whiteMove);
+    applyBlackMove(turn.blackMove);
 }
