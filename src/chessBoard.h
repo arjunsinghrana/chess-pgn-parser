@@ -30,6 +30,7 @@ private:
 
     void applyMoveForKnight(Color color, ChessMove chessMove);
     void applyMoveForBishop(Color color, ChessMove chessMove);
+    void applyMoveForRook(Color color, ChessMove chessMove);
 
 public:
     ChessBoard();
