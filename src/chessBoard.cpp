@@ -111,6 +111,10 @@ void ChessBoard::applyWhiteMove(ChessMove chessMove)
     {
         applyMoveForKing(Color::WHITE, chessMove);
     }
+    else if (Piece::QUEEN == chessMove.piece)
+    {
+        applyMoveForQueen(Color::WHITE, chessMove);
+    }
 
 }
 
@@ -139,6 +143,10 @@ void ChessBoard::applyBlackMove(ChessMove chessMove)
     else if (Piece::KING == chessMove.piece)
     {
         applyMoveForKing(Color::BLACK, chessMove);
+    }
+    else if (Piece::QUEEN == chessMove.piece)
+    {
+        applyMoveForQueen(Color::BLACK, chessMove);
     }
 }
 
@@ -353,6 +361,55 @@ void ChessBoard::applyMoveForKing(Color color, ChessMove chessMove)
         if (chessPiece == board[old_row][old_col])
         {
             found = true;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
+        board[row][col] = chessPiece;
+    }
+}
+
+void ChessBoard::applyMoveForQueen(Color color, ChessMove chessMove)
+{
+    ChessPiece chessPiece = {color, Piece::QUEEN};
+
+    int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
+
+    int directions[8][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
+                             {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    int old_col = -1;
+    int old_row = -1;
+    bool found = false;
+
+    for (int i = 0; i < 8; i++)
+    {
+        old_col = col;
+        old_row = row;
+
+        while (true)
+        {
+            old_col += directions[i][0];
+            old_row += directions[i][1];
+
+            if (!validPosition(old_row, old_col))
+            {
+                break;
+            }
+
+            if (chessPiece == board[old_row][old_col])
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
             break;
         }
     }

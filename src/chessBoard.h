@@ -32,6 +32,7 @@ private:
     void applyMoveForBishop(Color color, ChessMove chessMove);
     void applyMoveForRook(Color color, ChessMove chessMove);
     void applyMoveForKing(Color color, ChessMove chessMove);
+    void applyMoveForQueen(Color color, ChessMove chessMove);
 
 public:
     ChessBoard();
