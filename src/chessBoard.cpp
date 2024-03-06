@@ -85,7 +85,7 @@ int ChessBoard::fileToCol(char file)
     return file - 'a';
 }
 
-void ChessBoard::applyWhiteMove(ChessMove chessMove)
+void ChessBoard::applyMove(Color color, ChessMove chessMove)
 {
     if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
@@ -97,56 +97,23 @@ void ChessBoard::applyWhiteMove(ChessMove chessMove)
     }
     else if (Piece::KNIGHT == chessMove.piece)
     {
-        applyMoveForKnight(Color::WHITE, chessMove);
+        applyMoveForKnight(color, chessMove);
     }
     else if (Piece::BISHOP == chessMove.piece)
     {
-        applyMoveForBishop(Color::WHITE, chessMove);
+        applyMoveForBishop(color, chessMove);
     }
     else if (Piece::ROOK == chessMove.piece)
     {
-        applyMoveForRook(Color::WHITE, chessMove);
+        applyMoveForRook(color, chessMove);
     }
     else if (Piece::KING == chessMove.piece)
     {
-        applyMoveForKing(Color::WHITE, chessMove);
+        applyMoveForKing(color, chessMove);
     }
     else if (Piece::QUEEN == chessMove.piece)
     {
-        applyMoveForQueen(Color::WHITE, chessMove);
-    }
-
-}
-
-void ChessBoard::applyBlackMove(ChessMove chessMove)
-{
-    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
-    {
-        applyMoveWithSourceFileAndRank(chessMove);
-    } 
-    else if (Piece::PAWN == chessMove.piece)
-    {
-        applyMoveForBlackPawn(chessMove);
-    }
-    else if (Piece::KNIGHT == chessMove.piece)
-    {
-        applyMoveForKnight(Color::BLACK, chessMove);
-    }
-    else if (Piece::BISHOP == chessMove.piece)
-    {
-        applyMoveForBishop(Color::BLACK, chessMove);
-    }
-    else if (Piece::ROOK == chessMove.piece)
-    {
-        applyMoveForRook(Color::BLACK, chessMove);
-    }
-    else if (Piece::KING == chessMove.piece)
-    {
-        applyMoveForKing(Color::BLACK, chessMove);
-    }
-    else if (Piece::QUEEN == chessMove.piece)
-    {
-        applyMoveForQueen(Color::BLACK, chessMove);
+        applyMoveForQueen(color, chessMove);
     }
 }
 
@@ -428,6 +395,6 @@ bool ChessBoard::validPosition(int row, int col)
 
 void ChessBoard::applyTurn(ChessTurn turn)
 {
-    applyWhiteMove(turn.whiteMove);
-    applyBlackMove(turn.blackMove);
+    applyMove(Color::WHITE, turn.whiteMove);
+    applyMove(Color::BLACK, turn.blackMove);
 }

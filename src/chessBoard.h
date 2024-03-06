@@ -17,8 +17,7 @@ private:
 
     bool validPosition(int row, int col);
 
-    void applyWhiteMove(ChessMove whiteMove);
-    void applyBlackMove(ChessMove blackMove);
+    void applyMove(Color color, ChessMove chessMove);
 
     int rankToRow(char rank);
     int fileToCol(char file);
