@@ -15,5 +15,6 @@ void ChessMove::display() const
     cout << "Is Capture? " << (isCapture ? "Yes" : "No") << ", ";
     cout << "Is Check? " << (isCheck ? "Yes" : "No") << ", ";
     cout << "Is Checkmate? " << (isCheckmate ? "Yes" : "No") << ", ";
-    cout << "Is Castling? " << (isCastling ? "Yes" : "No") << "}" << endl;
+    cout << "Is King Side Castling? " << (isKingSideCastling ? "Yes" : "No") << ", ";
+    cout << "Is Queen Side Castling? " << (isQueenSideCastling ? "Yes" : "No") << "}" << endl;
 }

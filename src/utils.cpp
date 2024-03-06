@@ -45,8 +45,6 @@ string Utils::removeSubstringWithNumberAndThreeDots(const string& input) {
 
 ChessMove Utils::parseSANMove(string& san)
 {
-    // cout << "san: " << san << endl;
-
     ChessMove move;
 
     // Capture
@@ -64,18 +62,28 @@ ChessMove Utils::parseSANMove(string& san)
         move.isCheck = true;
     }
 
+    // King Side Castling
+    if ("O-O" == san) {
+        move.isKingSideCastling = true;
+        return move;
+    }
+
     // Castling
-    if (san == "O-O" || san == "O-O-O") {
-        move.isCastling = true;
+    if ("O-O-O" == san) {
+        move.isQueenSideCastling = true;
+        return move;
+    }
+
+    // Return empty move for Result
+    if ("1/2-1/2" == san || "1-0" == san || "0-1" == san)
+    {
         return move;
     }
 
     // Upper case letters denote pieces
     if (isupper(san[0])) {
-        // cout << "san: " << san << endl;
         move.piece = charToPiece(san[0]);
         san = san.substr(1); // Remove piece from the SAN string
-        // cout << "san: " << san << endl;
     } else {
         move.piece = charToPiece('P'); // Assume it's a pawn if no piece is specified
     }

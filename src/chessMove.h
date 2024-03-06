@@ -10,14 +10,18 @@ using namespace std;
 struct ChessMove 
 {
     Piece piece = Piece::EMPTY;
+
     char sourceFile = '?';
     char sourceRank = '?';
     char destinationFile = '?';
     char destinationRank = '?';
+
     bool isCapture = false;
     bool isCheck = false;
     bool isCheckmate = false;
-    bool isCastling = false;
+    
+    bool isKingSideCastling = false;
+    bool isQueenSideCastling = false;
     
     // Display contents of class
     void display() const;
