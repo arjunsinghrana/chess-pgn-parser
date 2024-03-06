@@ -77,7 +77,12 @@ void ChessBoard::reset()
 
 int ChessBoard::rankToRow(char rank)
 {
-    return BOARD_SIZE - (rank- '0');
+    return BOARD_SIZE - (rank - '0');
+}
+
+char ChessBoard::rowToRank(int row)
+{
+    return BOARD_SIZE - (row - '0');
 }
 
 int ChessBoard::fileToCol(char file)
@@ -89,6 +94,24 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
 {
     if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
+        applyMoveWithSourceFileAndRank(chessMove);
+        return;
+    }
+
+    if (chessMove.sourceFile != '?')
+    {
+        ChessPiece chessPiece = {color, chessMove.piece};
+
+        int sourceCol = fileToCol(chessMove.sourceFile);
+
+        for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
+        {
+            if (chessPiece == board[sourceRow][sourceCol])
+            {
+                chessMove.sourceRank = rowToRank(sourceRow);
+            }
+        }
+
         applyMoveWithSourceFileAndRank(chessMove);
         return;
     }

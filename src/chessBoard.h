@@ -20,6 +20,8 @@ private:
     void applyMove(Color color, ChessMove chessMove);
 
     int rankToRow(char rank);
+    char rowToRank(int row);
+
     int fileToCol(char file);
 
     void applyMoveWithSourceFileAndRank(ChessMove chessMove);
