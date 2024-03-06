@@ -85,60 +85,60 @@ int ChessBoard::fileToCol(char file)
     return file - 'a';
 }
 
-void ChessBoard::applyWhiteMove(ChessMove whiteMove)
+void ChessBoard::applyWhiteMove(ChessMove chessMove)
 {
-    if (whiteMove.sourceFile != '?' && whiteMove.sourceRank != '?')
+    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
-        applyMoveWithSourceFileAndRank(whiteMove);
+        applyMoveWithSourceFileAndRank(chessMove);
     }
-    else if (Piece::PAWN == whiteMove.piece)
+    else if (Piece::PAWN == chessMove.piece)
     {
-        applyMoveForWhitePawn(whiteMove);
+        applyMoveForWhitePawn(chessMove);
     }
-    else if (Piece::KNIGHT == whiteMove.piece)
+    else if (Piece::KNIGHT == chessMove.piece)
     {
-        applyMoveForKnight(Color::WHITE, whiteMove);
+        applyMoveForKnight(Color::WHITE, chessMove);
     }
-    else if (Piece::BISHOP == whiteMove.piece)
+    else if (Piece::BISHOP == chessMove.piece)
     {
-        applyMoveForBishop(Color::WHITE, whiteMove);
+        applyMoveForBishop(Color::WHITE, chessMove);
     }
-    else if (Piece::ROOK == whiteMove.piece)
+    else if (Piece::ROOK == chessMove.piece)
     {
-        applyMoveForRook(Color::WHITE, whiteMove);
+        applyMoveForRook(Color::WHITE, chessMove);
     }
-    else if (Piece::KING == whiteMove.piece)
+    else if (Piece::KING == chessMove.piece)
     {
-        applyMoveForKing(Color::WHITE, whiteMove);
+        applyMoveForKing(Color::WHITE, chessMove);
     }
 
 }
 
-void ChessBoard::applyBlackMove(ChessMove blackMove)
+void ChessBoard::applyBlackMove(ChessMove chessMove)
 {
-    if (blackMove.sourceFile != '?' && blackMove.sourceRank != '?')
+    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
-        applyMoveWithSourceFileAndRank(blackMove);
+        applyMoveWithSourceFileAndRank(chessMove);
     } 
-    else if (Piece::PAWN == blackMove.piece)
+    else if (Piece::PAWN == chessMove.piece)
     {
-        applyMoveForBlackPawn(blackMove);
+        applyMoveForBlackPawn(chessMove);
     }
-    else if (Piece::KNIGHT == blackMove.piece)
+    else if (Piece::KNIGHT == chessMove.piece)
     {
-        applyMoveForKnight(Color::BLACK, blackMove);
+        applyMoveForKnight(Color::BLACK, chessMove);
     }
-    else if (Piece::BISHOP == blackMove.piece)
+    else if (Piece::BISHOP == chessMove.piece)
     {
-        applyMoveForBishop(Color::BLACK, blackMove);
+        applyMoveForBishop(Color::BLACK, chessMove);
     }
-    else if (Piece::ROOK == blackMove.piece)
+    else if (Piece::ROOK == chessMove.piece)
     {
-        applyMoveForRook(Color::BLACK, blackMove);
+        applyMoveForRook(Color::BLACK, chessMove);
     }
-    else if (Piece::KING == blackMove.piece)
+    else if (Piece::KING == chessMove.piece)
     {
-        applyMoveForKing(Color::BLACK, blackMove);
+        applyMoveForKing(Color::BLACK, chessMove);
     }
 }
 
