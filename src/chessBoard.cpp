@@ -90,30 +90,38 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
     if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
         applyMoveWithSourceFileAndRank(chessMove);
+        return;
     }
-    else if (Piece::PAWN == chessMove.piece)
+
+    switch (chessMove.piece)
     {
-        applyMoveForWhitePawn(chessMove);
-    }
-    else if (Piece::KNIGHT == chessMove.piece)
-    {
+    case Piece::PAWN:
+        if (Color::WHITE == color)
+        {
+            applyMoveForWhitePawn(chessMove);
+        }
+        else if (Color::BLACK == color)
+        {
+            applyMoveForBlackPawn(chessMove);
+        }
+        break;
+    case Piece::KNIGHT:
         applyMoveForKnight(color, chessMove);
-    }
-    else if (Piece::BISHOP == chessMove.piece)
-    {
+        break;
+    case Piece::BISHOP:
         applyMoveForBishop(color, chessMove);
-    }
-    else if (Piece::ROOK == chessMove.piece)
-    {
+        break;
+    case Piece::ROOK:
         applyMoveForRook(color, chessMove);
-    }
-    else if (Piece::KING == chessMove.piece)
-    {
+        break;
+    case Piece::KING:
         applyMoveForKing(color, chessMove);
-    }
-    else if (Piece::QUEEN == chessMove.piece)
-    {
+        break;
+    case Piece::QUEEN:
         applyMoveForQueen(color, chessMove);
+        break;
+    default:
+        break;
     }
 }
 
