@@ -33,6 +33,9 @@ private:
     void applyMoveForKing(Color color, ChessMove chessMove);
     void applyMoveForQueen(Color color, ChessMove chessMove);
 
+    void applyMoveForKingSideCastling(Color color);
+    void applyMoveForQueenSideCastling(Color color);
+
 public:
     ChessBoard();
 

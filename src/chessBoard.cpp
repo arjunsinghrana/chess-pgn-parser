@@ -93,6 +93,18 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
         return;
     }
 
+    if (chessMove.isKingSideCastling)
+    {
+        applyMoveForKingSideCastling(color);
+        return;
+    }
+
+    if (chessMove.isQueenSideCastling)
+    {
+        applyMoveForQueenSideCastling(color);
+        return;
+    }
+
     switch (chessMove.piece)
     {
     case Piece::PAWN:
@@ -393,6 +405,48 @@ void ChessBoard::applyMoveForQueen(Color color, ChessMove chessMove)
     {
         board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
         board[row][col] = chessPiece;
+    }
+}
+
+void ChessBoard::applyMoveForKingSideCastling(Color color)
+{
+    switch (color)
+    {
+    case Color::WHITE:
+        board[7][4] = {Color::EMPTY, Piece::EMPTY};
+        board[7][7] = {Color::EMPTY, Piece::EMPTY};
+        board[7][6] = {color, Piece::KING};
+        board[7][5] = {color, Piece::ROOK};
+        break;
+    case Color::BLACK:
+        board[0][4] = {Color::EMPTY, Piece::EMPTY};
+        board[0][7] = {Color::EMPTY, Piece::EMPTY};
+        board[0][6] = {color, Piece::KING};
+        board[0][5] = {color, Piece::ROOK};
+        break;
+    default:
+        break;
+    }
+}
+
+void ChessBoard::applyMoveForQueenSideCastling(Color color)
+{
+    switch (color)
+    {
+    case Color::WHITE:
+        board[7][4] = {Color::EMPTY, Piece::EMPTY};
+        board[7][0] = {Color::EMPTY, Piece::EMPTY};
+        board[7][2] = {color, Piece::KING};
+        board[7][3] = {color, Piece::ROOK};
+        break;
+    case Color::BLACK:
+        board[0][4] = {Color::EMPTY, Piece::EMPTY};
+        board[0][0] = {Color::EMPTY, Piece::EMPTY};
+        board[0][2] = {color, Piece::KING};
+        board[0][3] = {color, Piece::ROOK};
+        break;
+    default:
+        break;
     }
 }
 
