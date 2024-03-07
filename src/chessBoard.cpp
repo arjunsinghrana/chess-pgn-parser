@@ -263,10 +263,14 @@ void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
 
 void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
 {
-    ChessPiece chessPiece = board[rankToRow(chessMove.sourceRank)][fileToCol(chessMove.sourceFile)];
-    board[rankToRow(chessMove.destinationRank)][fileToCol(chessMove.destinationFile)] = chessPiece;
+    int sourceRow = rankToRow(chessMove.sourceRank);
+    int sourceCol = fileToCol(chessMove.sourceFile);
 
-    board[rankToRow(chessMove.sourceRank)][fileToCol(chessMove.sourceFile)] = {Color::EMPTY, Piece::EMPTY};
+    int destRow = rankToRow(chessMove.destinationRank);
+    int destCol = fileToCol(chessMove.destinationFile);
+
+    board[destRow][destCol] = board[sourceRow][sourceCol];;
+    board[sourceRow][sourceCol] = {Color::EMPTY, Piece::EMPTY};
 }
 
 void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
