@@ -29,12 +29,10 @@ private:
     void applyMoveForWhitePawn(ChessMove chessMove);
     void applyMoveForBlackPawn(ChessMove chessMove);
 
-    void applyMoveForKnight(Color color, ChessMove chessMove);
-    void applyMoveForKing(Color color, ChessMove chessMove);
-    void applyMoveForQueen(Color color, ChessMove chessMove);
 
     vector<pair<int, int>> getDirectionsForPiece(Piece piece);
-    void applyMoveWithDirections(Color color, ChessMove chessMove);
+    void applyMoveWithSingleStep(Color color, ChessMove chessMove);
+    void applyMoveWithMultipleSteps(Color color, ChessMove chessMove);
 
     void applyMoveForKingSideCastling(Color color);
     void applyMoveForQueenSideCastling(Color color);

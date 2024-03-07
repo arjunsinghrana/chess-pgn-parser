@@ -98,6 +98,15 @@ vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece)
         return {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     case Piece::BISHOP:
         return {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    case Piece::QUEEN:
+        return {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
+                {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    case Piece::KNIGHT:
+        return {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+                    {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+    case Piece::KING:
+        return {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, 
+                    {0, 1}, {1, -1}, {1, 0}, {1, 1}};
     default:
         return {};
     }
@@ -154,26 +163,58 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
         }
         break;
     case Piece::KNIGHT:
-        applyMoveForKnight(color, chessMove);
+        applyMoveWithSingleStep(color, chessMove);
         break;
     case Piece::BISHOP:
-        applyMoveWithDirections(color, chessMove);
+        applyMoveWithMultipleSteps(color, chessMove);
         break;
     case Piece::ROOK:
-        applyMoveWithDirections(color, chessMove);
+        applyMoveWithMultipleSteps(color, chessMove);
         break;
     case Piece::KING:
-        applyMoveForKing(color, chessMove);
+        applyMoveWithSingleStep(color, chessMove);
         break;
     case Piece::QUEEN:
-        applyMoveForQueen(color, chessMove);
+        applyMoveWithMultipleSteps(color, chessMove);
         break;
     default:
         break;
     }
 }
 
-void ChessBoard::applyMoveWithDirections(Color color, ChessMove chessMove)
+void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
+{
+    ChessPiece chessPiece = {color, chessMove.piece};
+    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+
+    int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
+
+    vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
+
+    int old_col = -1;
+    int old_row = -1;
+    bool found = false;
+    for (int i = 0; i < directions.size(); i++)
+    {
+        old_col = col + directions[i].first;
+        old_row = row + directions[i].second;
+
+        if (validPosition(old_row, old_col) && chessPiece == board[old_row][old_col])
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[old_row][old_col] = emptyPiece;
+        board[row][col] = chessPiece;
+    }
+}
+
+void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
 {
     ChessPiece chessPiece = {color, chessMove.piece};
     ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
@@ -282,132 +323,6 @@ void ChessBoard::applyMoveForBlackPawn(ChessMove chessMove)
     if (found)
     {
         board[i][col] = {Color::EMPTY, Piece::EMPTY};
-        board[row][col] = chessPiece;
-    }
-}
-
-void ChessBoard::applyMoveForKnight(Color color, ChessMove chessMove)
-{
-    ChessPiece chessPiece = {color, Piece::KNIGHT};
-
-    int col = fileToCol(chessMove.destinationFile);
-    int row = rankToRow(chessMove.destinationRank);
-
-    int moves[8][2] = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
-                    {1, -2}, {1, 2}, {2, -1}, {2, 1}};
-
-    int old_col = -1;
-    int old_row = -1;
-    bool found = false;
-    for (int i = 0; i < 8; i++)
-    {
-        old_col = col + moves[i][0];
-        old_row = row + moves[i][1];
-
-        if (validPosition(old_row, old_col) && chessPiece == board[old_row][old_col])
-        {
-            found = true;
-            break;
-        }
-    }
-
-    if (found)
-    {
-        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
-        board[row][col] = chessPiece;
-    }
-}
-
-void ChessBoard::applyMoveForKing(Color color, ChessMove chessMove)
-{
-    ChessPiece chessPiece = {color, Piece::KING};
-
-    int row = rankToRow(chessMove.destinationRank);
-    int col = fileToCol(chessMove.destinationFile);
-
-    vector<pair<int, int>> directions = {
-        {-1, -1}, 
-        {-1, 0}, 
-        {-1, 1}, 
-        {0, -1},
-        {0, 1}, 
-        {1, -1}, 
-        {1, 0}, 
-        {1, 1}
-    };
-
-    int old_row = -1;
-    int old_col = -1;
-    bool found = false;
-    for(int i = 0; i < directions.size(); i++)
-    {
-        old_col = col + directions[i].first;
-        old_row = row + directions[i].second;
-
-        if (!validPosition(old_row, old_col))
-        {
-            continue;
-        }
-
-        if (chessPiece == board[old_row][old_col])
-        {
-            found = true;
-            break;
-        }
-    }
-
-    if (found)
-    {
-        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
-        board[row][col] = chessPiece;
-    }
-}
-
-void ChessBoard::applyMoveForQueen(Color color, ChessMove chessMove)
-{
-    ChessPiece chessPiece = {color, Piece::QUEEN};
-
-    int col = fileToCol(chessMove.destinationFile);
-    int row = rankToRow(chessMove.destinationRank);
-
-    vector<pair<int, int>> directions = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
-                             {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-
-    int old_col = -1;
-    int old_row = -1;
-    bool found = false;
-
-    for (int i = 0; i < directions.size(); i++)
-    {
-        old_col = col;
-        old_row = row;
-
-        while (true)
-        {
-            old_col += directions[i].first;
-            old_row += directions[i].second;
-
-            if (!validPosition(old_row, old_col))
-            {
-                break;
-            }
-
-            if (chessPiece == board[old_row][old_col])
-            {
-                found = true;
-                break;
-            }
-        }
-
-        if (found)
-        {
-            break;
-        }
-    }
-
-    if (found)
-    {
-        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
         board[row][col] = chessPiece;
     }
 }
