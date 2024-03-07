@@ -107,20 +107,58 @@ vector<pair<int, int>> ChessBoard::getDirectionsForPiece(const Piece& piece) con
     switch (piece)
     {
     case Piece::PAWN:
-        return {{-1, 0}, {-1, -1}, {-1, 1}}; // Default for White pawn
+        return { // Default for White pawn
+            {-1, 0},  // Move up the board
+            {-1, -1}, // Move up and left
+            {-1, 1}   // Move up and right
+            }; 
     case Piece::ROOK:
-        return {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        return {
+            {-1, 0}, // Move up
+            {1, 0},  // Move down
+            {0, -1}, // Move left
+            {0, 1}   // Move right
+            }; 
     case Piece::BISHOP:
-        return {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+        return {
+            {1, 1},  // Move down and right
+            {-1, 1}, // Move up and right
+            {1, -1}, // Move down and left
+            {-1, -1} // Move up and left
+            };
     case Piece::QUEEN:
-        return {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
-                {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        return {
+            {1, 1},   // Move down and right
+            {-1, 1},  // Move up and right
+            {1, -1},  // Move down and left
+            {-1, -1}, // Move up and left
+            {1, 0},   // Move down
+            {-1, 0},  // Move up
+            {0, 1},   // Move right
+            {0, -1}   // Move left
+            };
     case Piece::KNIGHT:
-        return {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
-                    {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+        return {
+            {-2, -1}, // Move 2 up and left
+            {-2, 1},  // Move 2 up and right
+            {-1, -2}, // Move up and 2 left
+            {-1, 2},  // Move up and 2 right
+            {1, -2},  // Move down and 2 left
+            {1, 2},   // Move down and 2 right
+            {2, -1},  // Move 2 down and left
+            {2, 1}    // Move 2 down and right
+            };
     case Piece::KING:
-        return {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, 
-                    {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        return {
+            {-1, -1}, // Move up and left
+            {-1, 0},  // Move up 
+            {-1, 1},  // Move up and right
+            {0, -1},  // Move left
+            {0, 1},   // Move right
+            {1, -1},  // Move down and left
+            {1, 0},   // Move down
+            {1, 1}    // Move down and right
+            };
     default:
         return {};
     }
