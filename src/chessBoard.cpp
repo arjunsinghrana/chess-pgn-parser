@@ -285,8 +285,8 @@ void ChessBoard::applyMoveForWhitePawn(ChessMove chessMove)
     int col = fileToCol(chessMove.destinationFile);
 
     bool found = false;
-    int i = 0;
-    for (; !found && i < BOARD_SIZE; i++)
+    int i = BOARD_SIZE - 1;
+    for (; !found && i >= 0; i--)
     {
         if (chessPiece == board[i][col])
         {
@@ -310,8 +310,8 @@ void ChessBoard::applyMoveForBlackPawn(ChessMove chessMove)
     int col = fileToCol(chessMove.destinationFile);
 
     bool found = false;
-    int i = BOARD_SIZE - 1;
-    for (; !found && i >= 0; i--)
+    int i = 0;
+    for (; !found && i < BOARD_SIZE; i++)
     {
         if (chessPiece == board[i][col])
         {
