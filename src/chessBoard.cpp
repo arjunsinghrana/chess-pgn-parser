@@ -323,10 +323,42 @@ void ChessBoard::applyMoveWithSourceFileAndRank(const Color& color, const ChessM
     const int destRow = rankToRow(chessMove.destinationRank);
     const int destCol = fileToCol(chessMove.destinationFile);
 
+    checkEnPassant(color, chessMove);
+
     setChessPiece(destRow, destCol, getChessPiece(sourceRow, sourceCol));
     setChessPiece(sourceRow, sourceCol, emptyPiece);
 
     promotePieceIfApplicable(color, chessMove);
+}
+
+void ChessBoard::checkEnPassant(const Color& color, const ChessMove& chessMove)
+{
+    // Piece has to be a Pawn that has captured another piece
+    if (Piece::PAWN != chessMove.piece || !chessMove.isCapture)
+    {
+        return;
+    }
+
+    // Destination Rank has to be either 4 or 6
+    if ('4' != chessMove.destinationRank && '6' != chessMove.destinationRank)
+    {
+        return;
+    }
+
+    const int sourceRow = rankToRow(chessMove.sourceRank);
+    const int sourceCol = fileToCol(chessMove.sourceFile);
+
+    const int destRow = rankToRow(chessMove.destinationRank);
+    const int destCol = fileToCol(chessMove.destinationFile);
+
+    // Destination must be an empty square
+    if (getChessPiece(destRow, destCol) != emptyPiece)
+    {
+        return;
+    }
+
+    // Remove captured Pawn from board
+    setChessPiece(sourceRow, destCol, emptyPiece);
 }
 
 void ChessBoard::promotePieceIfApplicable(const Color& color, const ChessMove& chessMove)
@@ -340,7 +372,7 @@ void ChessBoard::promotePieceIfApplicable(const Color& color, const ChessMove& c
     }
 }
 
-bool ChessBoard::pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove)
+bool ChessBoard::pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove) const
 {
     if (Piece::PAWN != chessMove.piece)
     {

@@ -15,6 +15,7 @@ string ChessMove::toString() const
     ss << "Destination Square: " << destinationFile << destinationRank << ", ";
     ss << "Is King Side Castling? " << (isKingSideCastling ? "Yes" : "No") << ", ";
     ss << "Is Queen Side Castling? " << (isQueenSideCastling ? "Yes" : "No") << ", ";
+    ss << "Is Capture? " << (isCapture ? "Yes" : "No") << ", ";
     ss << "Is Promotion? " << (isPromotion ? "Yes" : "No") << ", ";
     ss << "Promoted Piece: " << Utils::pieceToString(promotedPiece) << "}" << endl;
 

@@ -19,6 +19,8 @@ struct ChessMove
     bool isKingSideCastling = false;
     bool isQueenSideCastling = false;
 
+    bool isCapture = false;
+
     bool isPromotion = false;
     Piece promotedPiece = Piece::EMPTY;
     

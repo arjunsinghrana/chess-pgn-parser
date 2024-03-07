@@ -62,6 +62,11 @@ ChessMove Utils::parseSANMove(string& san)
 {
     ChessMove move;
 
+    if (san.find("x") != string::npos)
+    {
+        move.isCapture = true;
+    }
+
     // Remove characters for capture, check and checkmate from string
     string charactersToRemove = "x+#";
     san = removeCharactersFromString(charactersToRemove, san);

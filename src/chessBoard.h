@@ -43,8 +43,10 @@ private:
     void applyMoveForKingSideCastling(const Color& color);
     void applyMoveForQueenSideCastling(const Color& color);
 
+    void checkEnPassant(const Color& color, const ChessMove& chessMove);
+
     void promotePieceIfApplicable(const Color& color, const ChessMove& chessMove);
-    bool pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove);
+    bool pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove) const;
 
 public:
     ChessBoard();
