@@ -216,8 +216,8 @@ void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& ch
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    int row = rankToRow(chessMove.destinationRank);
-    int col = fileToCol(chessMove.destinationFile);
+    const int row = rankToRow(chessMove.destinationRank);
+    const int col = fileToCol(chessMove.destinationFile);
 
     const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
@@ -249,8 +249,8 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
 
     const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
-    int row = rankToRow(chessMove.destinationRank);
-    int col = fileToCol(chessMove.destinationFile);
+    const int row = rankToRow(chessMove.destinationRank);
+    const int col = fileToCol(chessMove.destinationFile);
 
     int old_row = -1;
     int old_col = -1;
@@ -303,7 +303,7 @@ void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& c
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    int sourceCol = fileToCol(chessMove.sourceFile);
+    const int sourceCol = fileToCol(chessMove.sourceFile);
 
     for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
     {
@@ -321,11 +321,11 @@ void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& c
 
 void ChessBoard::applyMoveWithSourceFileAndRank(const ChessMove& chessMove)
 {
-    int sourceRow = rankToRow(chessMove.sourceRank);
-    int sourceCol = fileToCol(chessMove.sourceFile);
+    const int sourceRow = rankToRow(chessMove.sourceRank);
+    const int sourceCol = fileToCol(chessMove.sourceFile);
 
-    int destRow = rankToRow(chessMove.destinationRank);
-    int destCol = fileToCol(chessMove.destinationFile);
+    const int destRow = rankToRow(chessMove.destinationRank);
+    const int destCol = fileToCol(chessMove.destinationFile);
 
     setChessPiece(destRow, destCol, getChessPiece(sourceRow, sourceCol));
     setChessPiece(sourceRow, sourceCol, emptyPiece);
@@ -335,13 +335,13 @@ void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    int row = rankToRow(chessMove.destinationRank);
-    int col = fileToCol(chessMove.destinationFile);
+    const int row = rankToRow(chessMove.destinationRank);
+    const int col = fileToCol(chessMove.destinationFile);
 
     bool found = false;
 
     int index  = Color::WHITE == color ? BOARD_SIZE - 1 : 0;
-    int update = Color::WHITE == color ? -1 : 1;
+    const int update = Color::WHITE == color ? -1 : 1;
 
     for (; !found && index >= 0 && index < BOARD_SIZE; index += update)
     {
@@ -366,7 +366,7 @@ bool ChessBoard::isValidMove(const Color& color, const Piece& piece, int sourceR
         case Piece::PAWN:
             for (const pair<int, int>& direction : getDirectionsForPiece(piece))
             {
-                int d = Color::WHITE == color ? 1 : -1;
+                const int d = Color::WHITE == color ? 1 : -1;
                 if (sourceRow + d * direction.first == destRow && sourceCol + direction.second == destCol)
                 {
                     return true;
