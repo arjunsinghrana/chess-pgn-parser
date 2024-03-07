@@ -36,7 +36,7 @@ private:
     void applyMoveForPawn(const Color& color, const ChessMove& chessMove);
     bool isValidMove(const Color& color, const Piece& piece, int sourceRow, int sourceCol, int destRow, int destCol) const;
 
-    vector<pair<int, int>> getDirectionsForPiece(const Piece& piece) const;
+    vector<pair<const int, const int>> getDirectionsForPiece(const Piece& piece) const;
     void applyMoveWithSingleStep(const Color& color, const ChessMove& chessMove);
     void applyMoveWithMultipleSteps(const Color& color, const ChessMove& chessMove);
 

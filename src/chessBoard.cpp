@@ -103,7 +103,7 @@ int ChessBoard::fileToCol(char file) const
     return file - 'a';
 }
 
-vector<pair<int, int>> ChessBoard::getDirectionsForPiece(const Piece& piece) const
+vector<pair<const int, const int>> ChessBoard::getDirectionsForPiece(const Piece& piece) const
 {
     switch (piece)
     {
@@ -219,12 +219,10 @@ void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& ch
     const int row = rankToRow(chessMove.destinationRank);
     const int col = fileToCol(chessMove.destinationFile);
 
-    const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
-
     int old_row = -1;
     int old_col = -1;
     bool found = false;
-    for (const auto& direction : directions)
+    for (const auto& direction : getDirectionsForPiece(chessMove.piece))
     {
         old_row = row + direction.first;
         old_col = col + direction.second;
@@ -247,8 +245,6 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
-
     const int row = rankToRow(chessMove.destinationRank);
     const int col = fileToCol(chessMove.destinationFile);
 
@@ -256,7 +252,7 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
     int old_col = -1;
     bool found = false;
 
-    for (const auto& direction : directions)
+    for (const auto& direction : getDirectionsForPiece(chessMove.piece))
     {
         old_row = row;
         old_col = col;
@@ -364,7 +360,7 @@ bool ChessBoard::isValidMove(const Color& color, const Piece& piece, int sourceR
     switch (piece)
     {
         case Piece::PAWN:
-            for (const pair<int, int>& direction : getDirectionsForPiece(piece))
+            for (const pair<const int, const int>& direction : getDirectionsForPiece(piece))
             {
                 const int d = Color::WHITE == color ? 1 : -1;
                 if (sourceRow + d * direction.first == destRow && sourceCol + direction.second == destCol)
@@ -375,7 +371,7 @@ bool ChessBoard::isValidMove(const Color& color, const Piece& piece, int sourceR
             return false;
 
         case Piece::KNIGHT:
-            for (const pair<int, int>& direction : getDirectionsForPiece(piece))
+            for (const pair<const int, const int>& direction : getDirectionsForPiece(piece))
             {
                 if (sourceRow + direction.first == destRow && sourceCol + direction.second == destCol)
                 {
