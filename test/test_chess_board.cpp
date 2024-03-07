@@ -89,6 +89,38 @@ TEST(ChessBoardTest, FischerSpassky) {
     EXPECT_EQ(board.toString(), ss.str());
 }
 
+TEST(ChessBoardTest, KorchnoiSpassky) {
+
+    filesystem::path currentDir = filesystem::current_path();
+    filesystem::path filePath = currentDir / "../../test/pgn/games" / "korchnoi_spassky_game.pgn";
+
+    // Concatenate all chess moves into a single string
+    const string concatenatedChessMoves = Utils::parseFileAndConcatenateChessMoves(filePath.string());
+
+    // Convert string containing moves into vector of Chess Turns
+    const vector<ChessTurn> turns = Utils::parseChessMoves(concatenatedChessMoves);
+
+    ChessBoard board;
+
+    for (const auto& turn : turns)
+    {
+        board.applyTurn(turn);
+    }
+
+    stringstream ss;
+    ss << "  |  |  |bQ|  |  |bK|  |" << endl;
+    ss << "  |  |  |  |  |bR|wP|  |" << endl;
+    ss << "  |  |  |  |  |  |wR|  |" << endl;
+    ss << "  |  |  |  |wQ|  |  |  |" << endl;
+    ss << "  |  |  |  |wP|  |  |bP|" << endl;
+    ss << "  |  |  |  |  |  |  |wP|" << endl;
+    ss << "  |  |  |  |  |  |wP|wK|" << endl;
+    ss << "  |  |  |  |  |  |  |  |" << endl;
+    ss << endl;
+
+    EXPECT_EQ(board.toString(), ss.str());
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

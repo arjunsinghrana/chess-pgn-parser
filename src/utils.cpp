@@ -123,7 +123,7 @@ string Utils::parseFileAndConcatenateChessMoves(const string& filename)
     ifstream file(filename);
     if (!file.is_open())
     {
-        cout << "Error: Unable to open file" << endl;
+        cout << "Error: Unable to open file: " << filename << endl;
         return "";
     }
 
