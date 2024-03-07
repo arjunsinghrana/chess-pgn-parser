@@ -1,7 +1,12 @@
 #include <gtest/gtest.h>
+
+#include <filesystem>
 #include <iostream>
 
 #include "../src/chessBoard.h"
+#include "../src/utils.h"
+
+using namespace std;
 
 TEST(ChessBoardTest, InitialiseBoard) {
     ChessBoard board;
@@ -45,6 +50,40 @@ TEST(ChessBoardTest, MovePawns) {
     ss << "  |  |  |  |  |  |  |  |" << endl;
     ss << "wP|wP|wP|wP|  |wP|wP|wP|" << endl;
     ss << "wR|wN|wB|wQ|wK|wB|wN|wR|" << endl;
+    ss << endl;
+
+    EXPECT_EQ(board.toString(), ss.str());
+}
+
+TEST(ChessBoardTest, FischerSpassky) {
+
+    filesystem::path currentDir = filesystem::current_path();
+    filesystem::path filePath = currentDir / "../../test/pgn/games" / "fischer_spassky_game.pgn";
+
+    cout << "Filepath: " << filePath.string() << endl;
+
+    // Concatenate all chess moves into a single string
+    const string concatenatedChessMoves = Utils::parseFileAndConcatenateChessMoves(filePath.string());
+
+    // Convert string containing moves into vector of Chess Turns
+    const vector<ChessTurn> turns = Utils::parseChessMoves(concatenatedChessMoves);
+
+    ChessBoard board;
+
+    for (const auto& turn : turns)
+    {
+        board.applyTurn(turn);
+    }
+
+    stringstream ss;
+    ss << "  |  |  |  |  |  |  |  |" << endl;
+    ss << "  |  |  |  |  |  |  |  |" << endl;
+    ss << "  |  |  |  |wR|  |bP|  |" << endl;
+    ss << "  |  |bK|  |  |  |bP|  |" << endl;
+    ss << "  |bP|  |  |  |  |wP|  |" << endl;
+    ss << "  |wP|  |bB|  |wP|  |  |" << endl;
+    ss << "  |  |  |wK|  |bN|  |  |" << endl;
+    ss << "  |  |  |  |  |  |  |  |" << endl;
     ss << endl;
 
     EXPECT_EQ(board.toString(), ss.str());
