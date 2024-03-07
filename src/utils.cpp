@@ -65,6 +65,15 @@ ChessMove Utils::parseSANMove(string& san)
     string charactersToRemove = "x+#";
     san = removeCharactersFromString(charactersToRemove, san);
 
+    size_t foundEquals = san.find("=");
+    if (foundEquals != string::npos)
+    {
+        move.isPromotion = true;
+
+        move.promotedPiece = charToPiece(san[foundEquals + 1]);
+        san = san.substr(0, foundEquals);
+    }
+
     // King Side Castling
     if ("O-O" == san) {
         move.isKingSideCastling = true;

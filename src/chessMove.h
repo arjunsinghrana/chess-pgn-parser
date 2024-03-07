@@ -18,6 +18,9 @@ struct ChessMove
     
     bool isKingSideCastling = false;
     bool isQueenSideCastling = false;
+
+    bool isPromotion = false;
+    Piece promotedPiece = Piece::EMPTY;
     
     string toString() const;
 };
