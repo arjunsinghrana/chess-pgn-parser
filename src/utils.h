@@ -24,6 +24,7 @@ private:
     static string colorToString(const Color& color);
 
 public:
+    static string parseFileAndConcatenateChessMoves(const string& filename);
     static vector<ChessTurn> parseChessMoves(const string& line);
 
     static string pieceToString(const Piece& piece);

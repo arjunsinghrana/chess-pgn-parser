@@ -1,6 +1,7 @@
 #include "utils.h"
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -115,6 +116,61 @@ ChessMove Utils::parseSANMove(string& san)
     }
 
     return move;
+}
+
+string Utils::parseFileAndConcatenateChessMoves(const string& filename)
+{
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cout << "Error: Unable to open file" << endl;
+        return "";
+    }
+
+    // Go through file and concatenate the lines containing moves
+    string line;
+    bool found = false;
+    while (getline(file, line)) 
+    {
+        // Skip empty lines
+        if (line.empty())
+        {
+            continue;
+        }
+
+        // Skip tag pairs
+        if (line[0] == '[')
+        {
+            continue;
+        }
+
+        // Filter out lines that are not moves
+        if (isdigit(line[0]))
+        {
+            found = true;
+            break;
+        }
+    }
+
+    // Check if game was not found
+    if (!found)
+    {
+        cerr << "Could not find game" << endl;
+        return "";
+    }
+
+    // Concatenate lines containing moves 
+    stringstream ss;
+    ss << line;
+    while(getline(file, line))
+    {
+        if (!line.empty())
+        {
+            ss << " " << line;
+        }
+    }
+
+    return ss.str();
 }
 
 vector<ChessTurn> Utils::parseChessMoves(const string& input)
