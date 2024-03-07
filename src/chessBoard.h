@@ -30,8 +30,6 @@ private:
     void applyMoveForBlackPawn(ChessMove chessMove);
 
     void applyMoveForKnight(Color color, ChessMove chessMove);
-    void applyMoveForBishop(Color color, ChessMove chessMove);
-    void applyMoveForRook(Color color, ChessMove chessMove);
     void applyMoveForKing(Color color, ChessMove chessMove);
     void applyMoveForQueen(Color color, ChessMove chessMove);
 
