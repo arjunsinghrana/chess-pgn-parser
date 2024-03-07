@@ -22,6 +22,10 @@ private:
 
     int fileToCol(char file) const;
 
+    void setChessPiece(int row, int col, ChessPiece piece);
+
+    const ChessPiece getChessPiece(int row, int col) const;
+
     void applyMove(Color color, ChessMove chessMove);
 
     void applyMoveWithSourceFileAndRank(ChessMove chessMove);
@@ -40,8 +44,6 @@ public:
 
     void reset();
     void print() const;
-
-    void setChessPiece(int row, int col, ChessPiece piece);
 
     void applyTurn(ChessTurn turn);
 };

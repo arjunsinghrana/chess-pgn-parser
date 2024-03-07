@@ -20,7 +20,7 @@ void ChessBoard::print() const
     {
         for (int j = 0; j < BOARD_SIZE; ++j) 
         {
-            cout << Utils::chessPieceToString(board[i][j]) << "|";
+            cout << Utils::chessPieceToString(getChessPiece(i, j)) << "|";
         }
         cout << endl;
     }
@@ -29,9 +29,21 @@ void ChessBoard::print() const
 
 void ChessBoard::setChessPiece(int row, int col, ChessPiece piece)
 {
-    if (row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE)
+    if (validPosition(row, col))
     {
         board[row][col] = piece;
+    }
+}
+
+const ChessPiece ChessBoard::getChessPiece(int row, int col) const
+{
+    if (validPosition(row, col))
+    {
+        return board[row][col];
+    }
+    else
+    {
+        return {Color::EMPTY, Piece::EMPTY};
     }
 }
 
@@ -123,7 +135,7 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
 
         for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
         {
-            if (chessPiece == board[sourceRow][sourceCol])
+            if (chessPiece == getChessPiece(sourceRow, sourceCol))
             {
                 chessMove.sourceRank = rowToRank(sourceRow);
             }
@@ -191,7 +203,7 @@ void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
         old_col = col + directions[i].first;
         old_row = row + directions[i].second;
 
-        if (validPosition(old_row, old_col) && chessPiece == board[old_row][old_col])
+        if (chessPiece == getChessPiece(old_row, old_col))
         {
             found = true;
             break;
@@ -200,8 +212,8 @@ void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
 
     if (found)
     {
-        board[old_row][old_col] = emptyPiece;
-        board[row][col] = chessPiece;
+        setChessPiece(old_row, old_col, emptyPiece);
+        setChessPiece(row, col, chessPiece);
     }
 }
 
@@ -236,12 +248,13 @@ void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
             }
 
             // Break if we have another piece blocking the way
-            if (emptyPiece != board[old_row][old_col] && chessPiece != board[old_row][old_col])
+            if (emptyPiece != getChessPiece(old_row, old_col) 
+             && chessPiece != getChessPiece(old_row, old_col))
             {
                 break;
             }
 
-            if (chessPiece == board[old_row][old_col])
+            if (chessPiece == getChessPiece(old_row, old_col))
             {
                 found = true;
                 break;
@@ -256,8 +269,8 @@ void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
 
     if (found)
     {
-        board[old_row][old_col] = emptyPiece;
-        board[row][col] = chessPiece;
+        setChessPiece(old_row, old_col, emptyPiece);
+        setChessPiece(row, col, chessPiece);
     }
 }
 
@@ -269,8 +282,8 @@ void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
     int destRow = rankToRow(chessMove.destinationRank);
     int destCol = fileToCol(chessMove.destinationFile);
 
-    board[destRow][destCol] = board[sourceRow][sourceCol];;
-    board[sourceRow][sourceCol] = {Color::EMPTY, Piece::EMPTY};
+    setChessPiece(destRow, destCol, getChessPiece(sourceRow, sourceCol));
+    setChessPiece(sourceRow, sourceCol, {Color::EMPTY, Piece::EMPTY});
 }
 
 void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
@@ -299,7 +312,7 @@ void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 
     for (; !found && index >= 0 && index < BOARD_SIZE; index += update)
     {
-        if (chessPiece == board[index][col])
+        if (chessPiece == getChessPiece(index, col))
         {
             found = true;
             break;
@@ -308,8 +321,8 @@ void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 
     if (found)
     {
-        board[index][col] = emptyPiece;
-        board[row][col] = chessPiece;
+        setChessPiece(index, col, emptyPiece);
+        setChessPiece(row, col, chessPiece);
     }
 }
 
@@ -318,16 +331,16 @@ void ChessBoard::applyMoveForKingSideCastling(Color color)
     switch (color)
     {
     case Color::WHITE:
-        board[7][4] = {Color::EMPTY, Piece::EMPTY};
-        board[7][7] = {Color::EMPTY, Piece::EMPTY};
-        board[7][6] = {color, Piece::KING};
-        board[7][5] = {color, Piece::ROOK};
+        setChessPiece(7, 4, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 7, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 6, {color, Piece::KING});
+        setChessPiece(7, 5, {color, Piece::ROOK});
         break;
     case Color::BLACK:
-        board[0][4] = {Color::EMPTY, Piece::EMPTY};
-        board[0][7] = {Color::EMPTY, Piece::EMPTY};
-        board[0][6] = {color, Piece::KING};
-        board[0][5] = {color, Piece::ROOK};
+        setChessPiece(0, 4, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 7, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 6, {color, Piece::KING});
+        setChessPiece(0, 5, {color, Piece::ROOK});
         break;
     default:
         break;
@@ -339,16 +352,16 @@ void ChessBoard::applyMoveForQueenSideCastling(Color color)
     switch (color)
     {
     case Color::WHITE:
-        board[7][4] = {Color::EMPTY, Piece::EMPTY};
-        board[7][0] = {Color::EMPTY, Piece::EMPTY};
-        board[7][2] = {color, Piece::KING};
-        board[7][3] = {color, Piece::ROOK};
+        setChessPiece(7, 4, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 0, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 2, {color, Piece::KING});
+        setChessPiece(7, 3, {color, Piece::ROOK});
         break;
     case Color::BLACK:
-        board[0][4] = {Color::EMPTY, Piece::EMPTY};
-        board[0][0] = {Color::EMPTY, Piece::EMPTY};
-        board[0][2] = {color, Piece::KING};
-        board[0][3] = {color, Piece::ROOK};
+        setChessPiece(0, 4, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 0, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 2, {color, Piece::KING});
+        setChessPiece(0, 3, {color, Piece::ROOK});
         break;
     default:
         break;
