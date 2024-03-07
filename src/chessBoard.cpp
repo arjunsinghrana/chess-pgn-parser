@@ -280,7 +280,6 @@ void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
 
             if (chessPiece == board[old_row][old_col])
             {
-                cout << "old row and old col for bishop: " << old_row << " " << old_col << endl;
                 found = true;
                 break;
             }
@@ -302,44 +301,54 @@ void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
 void ChessBoard::applyMoveForRook(Color color, ChessMove chessMove)
 {
     ChessPiece chessPiece = {color, Piece::ROOK};
+    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
-    int row = rankToRow(chessMove.destinationRank);
     int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
 
-    // Check file/col
-    int old_row = -1;
-    bool foundInFile = false;
-    for (int i = 0; i < BOARD_SIZE; i++)
-    {
-        if (chessPiece == board[i][col])
-        {
-            old_row = i;
-            foundInFile = true;
-            break;
-        }
-    }
+    vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    // Check rank/row
     int old_col = -1;
-    bool foundInRow = false;
-    for (int i = 0; i < BOARD_SIZE; i++)
+    int old_row = -1;
+    bool found = false;
+
+    for (int i = 0; i < directions.size(); i++)
     {
-        if (chessPiece == board[row][i])
+        old_col = col;
+        old_row = row;
+
+        while (true)
         {
-            old_col = i;
-            foundInRow = true;
+            old_col += directions[i].first;
+            old_row += directions[i].second;
+
+            if (!validPosition(old_row, old_col))
+            {
+                break;
+            }
+
+            // Check that no other piece is in the way
+            if (emptyPiece != board[old_row][old_col] && chessPiece != board[old_row][old_col])
+            {
+                break;
+            }
+
+            if (chessPiece == board[old_row][old_col])
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
             break;
         }
     }
 
-    if (foundInFile)
+    if (found)
     {
-        board[old_row][col] = {Color::EMPTY, Piece::EMPTY};
-        board[row][col] = chessPiece;
-    }
-    else if (foundInRow)
-    {
-        board[row][old_col] = {Color::EMPTY, Piece::EMPTY};
+        board[old_row][old_col] = emptyPiece;
         board[row][col] = chessPiece;
     }
 

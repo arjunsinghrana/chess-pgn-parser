@@ -13,6 +13,11 @@ struct ChessPiece
     {
         return color == other.color && piece == other.piece;
     }
+
+    bool operator!=(const ChessPiece& other) const
+    {
+        return !operator==(other);
+    }
 };
 
 #endif // CHESSPIECE_H
