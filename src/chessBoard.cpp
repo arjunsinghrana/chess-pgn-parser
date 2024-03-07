@@ -27,7 +27,7 @@ void ChessBoard::print() const
     cout << endl;
 }
 
-void ChessBoard::setChessPiece(int row, int col, ChessPiece piece)
+void ChessBoard::setChessPiece(int row, int col, const ChessPiece& piece)
 {
     if (validPosition(row, col))
     {

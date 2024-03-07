@@ -24,7 +24,7 @@ private:
 
     int fileToCol(char file) const;
 
-    void setChessPiece(int row, int col, ChessPiece piece);
+    void setChessPiece(int row, int col, const ChessPiece& piece);
 
     const ChessPiece& getChessPiece(int row, int col) const;
 
