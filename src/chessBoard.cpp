@@ -90,6 +90,19 @@ int ChessBoard::fileToCol(char file)
     return file - 'a';
 }
 
+vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece)
+{
+    switch (piece)
+    {
+    case Piece::ROOK:
+        return {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    case Piece::BISHOP:
+        return {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    default:
+        return {};
+    }
+}
+
 void ChessBoard::applyMove(Color color, ChessMove chessMove)
 {
     if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
@@ -144,10 +157,10 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
         applyMoveForKnight(color, chessMove);
         break;
     case Piece::BISHOP:
-        applyMoveForBishop(color, chessMove);
+        applyMoveWithDirections(color, chessMove);
         break;
     case Piece::ROOK:
-        applyMoveForRook(color, chessMove);
+        applyMoveWithDirections(color, chessMove);
         break;
     case Piece::KING:
         applyMoveForKing(color, chessMove);
@@ -157,6 +170,61 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
         break;
     default:
         break;
+    }
+}
+
+void ChessBoard::applyMoveWithDirections(Color color, ChessMove chessMove)
+{
+    ChessPiece chessPiece = {color, chessMove.piece};
+    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+
+    vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
+
+    int col = fileToCol(chessMove.destinationFile);
+    int row = rankToRow(chessMove.destinationRank);
+
+    int old_col = -1;
+    int old_row = -1;
+    bool found = false;
+
+    for (int i = 0; i < directions.size(); i++)
+    {
+        old_col = col;
+        old_row = row;
+
+        while (true)
+        {
+            old_col += directions[i].first;
+            old_row += directions[i].second;
+
+            if (!validPosition(old_row, old_col))
+            {
+                break;
+            }
+
+            // Check that no other piece is in the way
+            if (emptyPiece != board[old_row][old_col] && chessPiece != board[old_row][old_col])
+            {
+                break;
+            }
+
+            if (chessPiece == board[old_row][old_col])
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            break;
+        }
+    }
+
+    if (found)
+    {
+        board[old_row][old_col] = emptyPiece;
+        board[row][col] = chessPiece;
     }
 }
 
@@ -253,27 +321,34 @@ void ChessBoard::applyMoveForKnight(Color color, ChessMove chessMove)
 void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
 {
     ChessPiece chessPiece = {color, Piece::BISHOP};
+    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
 
-    int directions[4][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    vector<pair<int, int>> directions = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
 
     int old_col = -1;
     int old_row = -1;
     bool found = false;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < directions.size(); i++)
     {
         old_col = col;
         old_row = row;
 
         while (true)
         {
-            old_col += directions[i][0];
-            old_row += directions[i][1];
+            old_col += directions[i].first;
+            old_row += directions[i].second;
 
             if (!validPosition(old_row, old_col))
+            {
+                break;
+            }
+
+            // Check that no other piece is in the way
+            if (emptyPiece != board[old_row][old_col] && chessPiece != board[old_row][old_col])
             {
                 break;
             }
@@ -293,7 +368,7 @@ void ChessBoard::applyMoveForBishop(Color color, ChessMove chessMove)
 
     if (found)
     {
-        board[old_row][old_col] = {Color::EMPTY, Piece::EMPTY};
+        board[old_row][old_col] = emptyPiece;
         board[row][col] = chessPiece;
     }
 }
@@ -406,22 +481,22 @@ void ChessBoard::applyMoveForQueen(Color color, ChessMove chessMove)
     int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
 
-    int directions[8][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
+    vector<pair<int, int>> directions = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1},
                              {1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     int old_col = -1;
     int old_row = -1;
     bool found = false;
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < directions.size(); i++)
     {
         old_col = col;
         old_row = row;
 
         while (true)
         {
-            old_col += directions[i][0];
-            old_row += directions[i][1];
+            old_col += directions[i].first;
+            old_row += directions[i].second;
 
             if (!validPosition(old_row, old_col))
             {
