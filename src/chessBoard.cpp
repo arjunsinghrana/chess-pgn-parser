@@ -102,7 +102,7 @@ int ChessBoard::fileToCol(char file) const
     return file - 'a';
 }
 
-vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece) const
+vector<pair<int, int>> ChessBoard::getDirectionsForPiece(const Piece& piece) const
 {
     switch (piece)
     {
@@ -185,7 +185,7 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
     }
 }
 
-void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
+void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
@@ -216,7 +216,7 @@ void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
     }
 }
 
-void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
+void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove& chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
@@ -272,7 +272,7 @@ void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
     }
 }
 
-void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
+void ChessBoard::applyMoveWithSourceFileAndRank(const ChessMove& chessMove)
 {
     int sourceRow = rankToRow(chessMove.sourceRank);
     int sourceCol = fileToCol(chessMove.sourceFile);
@@ -284,7 +284,7 @@ void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
     setChessPiece(sourceRow, sourceCol, emptyPiece);
 }
 
-void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
+void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
@@ -323,7 +323,7 @@ void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
     }
 }
 
-void ChessBoard::applyMoveForKingSideCastling(Color color)
+void ChessBoard::applyMoveForKingSideCastling(const Color& color)
 {
     switch (color)
     {
@@ -344,7 +344,7 @@ void ChessBoard::applyMoveForKingSideCastling(Color color)
     }
 }
 
-void ChessBoard::applyMoveForQueenSideCastling(Color color)
+void ChessBoard::applyMoveForQueenSideCastling(const Color& color)
 {
     switch (color)
     {
@@ -370,7 +370,7 @@ bool ChessBoard::validPosition(int row, int col) const
     return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
 }
 
-void ChessBoard::applyTurn(ChessTurn turn)
+void ChessBoard::applyTurn(const ChessTurn& turn)
 {
     applyMove(Color::WHITE, turn.whiteMove);
     applyMove(Color::BLACK, turn.blackMove);

@@ -30,16 +30,16 @@ private:
 
     void applyMove(Color color, ChessMove chessMove);
 
-    void applyMoveWithSourceFileAndRank(ChessMove chessMove);
+    void applyMoveWithSourceFileAndRank(const ChessMove& chessMove);
 
-    void applyMoveForPawn(Color color, ChessMove chessMove);
+    void applyMoveForPawn(const Color& color, const ChessMove& chessMove);
 
-    vector<pair<int, int>> getDirectionsForPiece(Piece piece) const;
-    void applyMoveWithSingleStep(Color color, ChessMove chessMove);
-    void applyMoveWithMultipleSteps(Color color, ChessMove chessMove);
+    vector<pair<int, int>> getDirectionsForPiece(const Piece& piece) const;
+    void applyMoveWithSingleStep(const Color& color, const ChessMove& chessMove);
+    void applyMoveWithMultipleSteps(const Color& color, const ChessMove& chessMove);
 
-    void applyMoveForKingSideCastling(Color color);
-    void applyMoveForQueenSideCastling(Color color);
+    void applyMoveForKingSideCastling(const Color& color);
+    void applyMoveForQueenSideCastling(const Color& color);
 
 public:
     ChessBoard();
@@ -47,7 +47,7 @@ public:
     void reset();
     void print() const;
 
-    void applyTurn(ChessTurn turn);
+    void applyTurn(const ChessTurn& turn);
 };
 
 #endif // CHESSBOARD_H
