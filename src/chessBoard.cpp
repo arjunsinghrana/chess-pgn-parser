@@ -229,7 +229,7 @@ void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& ch
         old_row = row + direction.first;
         old_col = col + direction.second;
 
-        if (chessPiece == getChessPiece(old_row, old_col))
+        if (getChessPiece(old_row, old_col) == chessPiece)
         {
             found = true;
             break;
@@ -273,13 +273,13 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
             }
 
             // Break if we have another piece blocking the way
-            if (emptyPiece != getChessPiece(old_row, old_col) 
-             && chessPiece != getChessPiece(old_row, old_col))
+            if (getChessPiece(old_row, old_col) != emptyPiece  
+             && getChessPiece(old_row, old_col) != chessPiece)
             {
                 break;
             }
 
-            if (chessPiece == getChessPiece(old_row, old_col))
+            if (getChessPiece(old_row, old_col) == chessPiece)
             {
                 found = true;
                 break;
@@ -307,7 +307,7 @@ void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& c
 
     for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
     {
-        if (chessPiece == getChessPiece(sourceRow, sourceCol)
+        if (getChessPiece(sourceRow, sourceCol) == chessPiece
         && isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
             rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
         {
@@ -340,23 +340,12 @@ void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove
 
     bool found = false;
 
-    int index;
-    int update;
-
-    if (Color::WHITE == color)
-    {
-        index = BOARD_SIZE - 1;
-        update = -1;
-    }
-    else if (Color::BLACK == color)
-    {
-        index = 0;
-        update = 1;
-    }
+    int index  = Color::WHITE == color ? BOARD_SIZE - 1 : 0;
+    int update = Color::WHITE == color ? -1 : 1;
 
     for (; !found && index >= 0 && index < BOARD_SIZE; index += update)
     {
-        if (chessPiece == getChessPiece(index, col))
+        if (getChessPiece(index, col) == chessPiece)
         {
             found = true;
             break;
