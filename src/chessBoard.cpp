@@ -361,20 +361,28 @@ void ChessBoard::applyMoveForKing(Color color, ChessMove chessMove)
     int row = rankToRow(chessMove.destinationRank);
     int col = fileToCol(chessMove.destinationFile);
 
-    int moves[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1},
-                        {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    vector<pair<int, int>> directions = {
+        {-1, -1}, 
+        {-1, 0}, 
+        {-1, 1}, 
+        {0, -1},
+        {0, 1}, 
+        {1, -1}, 
+        {1, 0}, 
+        {1, 1}
+    };
 
     int old_row = -1;
     int old_col = -1;
     bool found = false;
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < directions.size(); i++)
     {
-        old_col = col + moves[i][0];
-        old_row = row + moves[i][1];
+        old_col = col + directions[i].first;
+        old_row = row + directions[i].second;
 
         if (!validPosition(old_row, old_col))
         {
-            break;
+            continue;
         }
 
         if (chessPiece == board[old_row][old_col])

@@ -15,6 +15,7 @@ class Utils
 public:
     static string removeSubstringInCurlyBrackets(const string& input);
     static string removeSubstringWithNumberAndThreeDots(const string& input);
+    static string removeCharactersFromString(const string& characters, const string& input);
 
     static ChessMove parseSANMove(string& san);
     static vector<ChessTurn> parseChessMoves(const string& line);

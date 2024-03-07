@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -43,6 +44,19 @@ string Utils::removeSubstringWithNumberAndThreeDots(const string& input) {
     return result.str();
 }
 
+string Utils::removeCharactersFromString(const string& characters, const string& input) {
+    string result = input;
+
+    // Use remove_if with a lambda function
+    result.erase(remove_if(result.begin(), result.end(),
+                                [&characters](char c) {
+                                    return characters.find(c) != string::npos;
+                                }),
+                 result.end());
+
+    return result;
+}
+
 ChessMove Utils::parseSANMove(string& san)
 {
     ChessMove move;
@@ -61,6 +75,10 @@ ChessMove Utils::parseSANMove(string& san)
     if (san.find("+") != string::npos && !move.isCheckmate) {
         move.isCheck = true;
     }
+
+    // Remove characters from string
+    string charactersToRemove = "x#+";
+    san = removeCharactersFromString(charactersToRemove, san);
 
     // King Side Castling
     if ("O-O" == san) {
