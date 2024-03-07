@@ -189,6 +189,7 @@ void ChessBoard::applyMove(const Color& color, const ChessMove& chessMove)
     if ('?' != chessMove.sourceFile && '?' == chessMove.sourceRank)
     {
         applyMoveByInferringRank(color, chessMove);
+        return;
     }
 
     switch (chessMove.piece)
@@ -313,7 +314,6 @@ void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& c
             chessMoveWithSourceFileAndRank.sourceRank = rowToRank(sourceRow);
 
             applyMoveWithSourceFileAndRank(chessMoveWithSourceFileAndRank);
-            return;
         }
     }
 }
