@@ -188,23 +188,7 @@ void ChessBoard::applyMove(const Color& color, const ChessMove& chessMove)
     // Source File is provided. We can infer the Source Rank.
     if ('?' != chessMove.sourceFile && '?' == chessMove.sourceRank)
     {
-        const ChessPiece chessPiece = {color, chessMove.piece};
-
-        int sourceCol = fileToCol(chessMove.sourceFile);
-
-        for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
-        {
-            if (chessPiece == getChessPiece(sourceRow, sourceCol)
-            && isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
-                rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
-            {
-                ChessMove chessMoveWithSourceFileAndRank = chessMove;
-                chessMoveWithSourceFileAndRank.sourceRank = rowToRank(sourceRow);
-
-                applyMoveWithSourceFileAndRank(chessMoveWithSourceFileAndRank);
-                return;
-            }
-        }
+        applyMoveByInferringRank(color, chessMove);
     }
 
     switch (chessMove.piece)
@@ -310,6 +294,27 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
     {
         setChessPiece(old_row, old_col, emptyPiece);
         setChessPiece(row, col, chessPiece);
+    }
+}
+
+void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& chessMove)
+{
+    const ChessPiece chessPiece = {color, chessMove.piece};
+
+    int sourceCol = fileToCol(chessMove.sourceFile);
+
+    for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
+    {
+        if (chessPiece == getChessPiece(sourceRow, sourceCol)
+        && isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
+            rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
+        {
+            ChessMove chessMoveWithSourceFileAndRank = chessMove;
+            chessMoveWithSourceFileAndRank.sourceRank = rowToRank(sourceRow);
+
+            applyMoveWithSourceFileAndRank(chessMoveWithSourceFileAndRank);
+            return;
+        }
     }
 }
 

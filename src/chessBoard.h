@@ -30,6 +30,7 @@ private:
 
     void applyMove(const Color& color, const ChessMove& chessMove);
 
+    void applyMoveByInferringRank(const Color& color, const ChessMove& chessMove);
     void applyMoveWithSourceFileAndRank(const ChessMove& chessMove);
 
     void applyMoveForPawn(const Color& color, const ChessMove& chessMove);
