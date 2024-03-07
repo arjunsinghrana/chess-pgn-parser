@@ -153,14 +153,7 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
     switch (chessMove.piece)
     {
     case Piece::PAWN:
-        if (Color::WHITE == color)
-        {
-            applyMoveForWhitePawn(chessMove);
-        }
-        else if (Color::BLACK == color)
-        {
-            applyMoveForBlackPawn(chessMove);
-        }
+        applyMoveForPawn(color, chessMove);
         break;
     case Piece::KNIGHT:
         applyMoveWithSingleStep(color, chessMove);
@@ -277,18 +270,32 @@ void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
     board[rankToRow(chessMove.sourceRank)][fileToCol(chessMove.sourceFile)] = {Color::EMPTY, Piece::EMPTY};
 }
 
-void ChessBoard::applyMoveForWhitePawn(ChessMove chessMove)
+void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 {
-    ChessPiece chessPiece = {Color::WHITE, Piece::PAWN};
+    ChessPiece chessPiece = {color, chessMove.piece};
 
     int row = rankToRow(chessMove.destinationRank);
     int col = fileToCol(chessMove.destinationFile);
 
     bool found = false;
-    int i = BOARD_SIZE - 1;
-    for (; !found && i >= 0; i--)
+
+    int index;
+    int update;
+
+    if (Color::WHITE == color)
     {
-        if (chessPiece == board[i][col])
+        index = BOARD_SIZE - 1;
+        update = -1;
+    }
+    else if (Color::BLACK == color)
+    {
+        index = 0;
+        update = 1;
+    }
+
+    for (; !found && index >= 0 && index < BOARD_SIZE; index += update)
+    {
+        if (chessPiece == board[index][col])
         {
             found = true;
             break;
@@ -297,32 +304,7 @@ void ChessBoard::applyMoveForWhitePawn(ChessMove chessMove)
 
     if (found)
     {
-        board[i][col] = {Color::EMPTY, Piece::EMPTY};
-        board[row][col] = chessPiece;
-    }
-}
-
-void ChessBoard::applyMoveForBlackPawn(ChessMove chessMove)
-{
-    ChessPiece chessPiece = {Color::BLACK, Piece::PAWN};
-
-    int row = rankToRow(chessMove.destinationRank);
-    int col = fileToCol(chessMove.destinationFile);
-
-    bool found = false;
-    int i = 0;
-    for (; !found && i < BOARD_SIZE; i++)
-    {
-        if (chessPiece == board[i][col])
-        {
-            found = true;
-            break;
-        }
-    }
-
-    if (found)
-    {
-        board[i][col] = {Color::EMPTY, Piece::EMPTY};
+        board[index][col] = {Color::EMPTY, Piece::EMPTY};
         board[row][col] = chessPiece;
     }
 }

@@ -26,9 +26,7 @@ private:
 
     void applyMoveWithSourceFileAndRank(ChessMove chessMove);
 
-    void applyMoveForWhitePawn(ChessMove chessMove);
-    void applyMoveForBlackPawn(ChessMove chessMove);
-
+    void applyMoveForPawn(Color color, ChessMove chessMove);
 
     vector<pair<int, int>> getDirectionsForPiece(Piece piece);
     void applyMoveWithSingleStep(Color color, ChessMove chessMove);
