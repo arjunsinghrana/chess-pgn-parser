@@ -13,9 +13,9 @@ class ChessBoard
 {
 private:
     const int BOARD_SIZE = 8;
+    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+    
     vector<vector<ChessPiece>> board;
-
-    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     bool validPosition(int row, int col) const;
 
