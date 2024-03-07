@@ -15,20 +15,20 @@ private:
     const int BOARD_SIZE = 8;
     vector<vector<ChessPiece>> board;
 
-    bool validPosition(int row, int col);
+    bool validPosition(int row, int col) const;
+
+    int rankToRow(char rank) const;
+    char rowToRank(int row) const;
+
+    int fileToCol(char file) const;
 
     void applyMove(Color color, ChessMove chessMove);
-
-    int rankToRow(char rank);
-    char rowToRank(int row);
-
-    int fileToCol(char file);
 
     void applyMoveWithSourceFileAndRank(ChessMove chessMove);
 
     void applyMoveForPawn(Color color, ChessMove chessMove);
 
-    vector<pair<int, int>> getDirectionsForPiece(Piece piece);
+    vector<pair<int, int>> getDirectionsForPiece(Piece piece) const;
     void applyMoveWithSingleStep(Color color, ChessMove chessMove);
     void applyMoveWithMultipleSteps(Color color, ChessMove chessMove);
 

@@ -75,22 +75,22 @@ void ChessBoard::reset()
     setChessPiece(1, 7, {Color::BLACK, Piece::PAWN});
 }
 
-int ChessBoard::rankToRow(char rank)
+int ChessBoard::rankToRow(char rank) const
 {
     return BOARD_SIZE - (rank - '0');
 }
 
-char ChessBoard::rowToRank(int row)
+char ChessBoard::rowToRank(int row) const
 {
     return BOARD_SIZE - (row - '0');
 }
 
-int ChessBoard::fileToCol(char file)
+int ChessBoard::fileToCol(char file) const
 {
     return file - 'a';
 }
 
-vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece)
+vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece) const
 {
     switch (piece)
     {
@@ -114,13 +114,8 @@ vector<pair<int, int>> ChessBoard::getDirectionsForPiece(Piece piece)
 
 void ChessBoard::applyMove(Color color, ChessMove chessMove)
 {
-    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
-    {
-        applyMoveWithSourceFileAndRank(chessMove);
-        return;
-    }
-
-    if (chessMove.sourceFile != '?')
+    // Source File is provided. We can infer the Source Rank.
+    if (chessMove.sourceFile != '?' && chessMove.sourceRank == '?')
     {
         ChessPiece chessPiece = {color, chessMove.piece};
 
@@ -133,7 +128,10 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
                 chessMove.sourceRank = rowToRank(sourceRow);
             }
         }
+    }
 
+    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
+    {
         applyMoveWithSourceFileAndRank(chessMove);
         return;
     }
@@ -231,12 +229,13 @@ void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
             old_col += directions[i].first;
             old_row += directions[i].second;
 
+            // Break as we cannot go further in this direction
             if (!validPosition(old_row, old_col))
             {
                 break;
             }
 
-            // Check that no other piece is in the way
+            // Break if we have another piece blocking the way
             if (emptyPiece != board[old_row][old_col] && chessPiece != board[old_row][old_col])
             {
                 break;
@@ -351,7 +350,7 @@ void ChessBoard::applyMoveForQueenSideCastling(Color color)
     }
 }
 
-bool ChessBoard::validPosition(int row, int col)
+bool ChessBoard::validPosition(int row, int col) const
 {
     return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
 }
