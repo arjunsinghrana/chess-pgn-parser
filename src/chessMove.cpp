@@ -12,9 +12,6 @@ void ChessMove::display() const
     cout << "Piece: " << Utils::pieceToString(piece) << ", ";
     cout << "Source Square: " << sourceFile << sourceRank << ", ";
     cout << "Destination Square: " << destinationFile << destinationRank << ", ";
-    cout << "Is Capture? " << (isCapture ? "Yes" : "No") << ", ";
-    cout << "Is Check? " << (isCheck ? "Yes" : "No") << ", ";
-    cout << "Is Checkmate? " << (isCheckmate ? "Yes" : "No") << ", ";
     cout << "Is King Side Castling? " << (isKingSideCastling ? "Yes" : "No") << ", ";
     cout << "Is Queen Side Castling? " << (isQueenSideCastling ? "Yes" : "No") << "}" << endl;
 }

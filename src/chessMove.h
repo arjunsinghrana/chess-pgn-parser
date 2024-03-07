@@ -15,10 +15,6 @@ struct ChessMove
     char sourceRank = '?';
     char destinationFile = '?';
     char destinationRank = '?';
-
-    bool isCapture = false;
-    bool isCheck = false;
-    bool isCheckmate = false;
     
     bool isKingSideCastling = false;
     bool isQueenSideCastling = false;
