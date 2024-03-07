@@ -31,7 +31,7 @@ private:
     void applyMove(const Color& color, const ChessMove& chessMove);
 
     void applyMoveByInferringRank(const Color& color, const ChessMove& chessMove);
-    void applyMoveWithSourceFileAndRank(const ChessMove& chessMove);
+    void applyMoveWithSourceFileAndRank(const Color& color, const ChessMove& chessMove);
 
     void applyMoveForPawn(const Color& color, const ChessMove& chessMove);
     bool isValidMove(const Color& color, const Piece& piece, int sourceRow, int sourceCol, int destRow, int destCol) const;
@@ -42,6 +42,9 @@ private:
 
     void applyMoveForKingSideCastling(const Color& color);
     void applyMoveForQueenSideCastling(const Color& color);
+
+    void promotePieceIfApplicable(const Color& color, const ChessMove& chessMove);
+    bool pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove);
 
 public:
     ChessBoard();

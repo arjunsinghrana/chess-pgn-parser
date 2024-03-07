@@ -182,7 +182,7 @@ void ChessBoard::applyMove(const Color& color, const ChessMove& chessMove)
     // Both Source File and Source Rank provided. Move piece.
     if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
     {
-        applyMoveWithSourceFileAndRank(chessMove);
+        applyMoveWithSourceFileAndRank(color, chessMove);
         return;
     }
 
@@ -310,12 +310,12 @@ void ChessBoard::applyMoveByInferringRank(const Color& color, const ChessMove& c
             ChessMove chessMoveWithSourceFileAndRank = chessMove;
             chessMoveWithSourceFileAndRank.sourceRank = rowToRank(sourceRow);
 
-            applyMoveWithSourceFileAndRank(chessMoveWithSourceFileAndRank);
+            applyMoveWithSourceFileAndRank(color, chessMoveWithSourceFileAndRank);
         }
     }
 }
 
-void ChessBoard::applyMoveWithSourceFileAndRank(const ChessMove& chessMove)
+void ChessBoard::applyMoveWithSourceFileAndRank(const Color& color, const ChessMove& chessMove)
 {
     const int sourceRow = rankToRow(chessMove.sourceRank);
     const int sourceCol = fileToCol(chessMove.sourceFile);
@@ -325,6 +325,39 @@ void ChessBoard::applyMoveWithSourceFileAndRank(const ChessMove& chessMove)
 
     setChessPiece(destRow, destCol, getChessPiece(sourceRow, sourceCol));
     setChessPiece(sourceRow, sourceCol, emptyPiece);
+
+    promotePieceIfApplicable(color, chessMove);
+}
+
+void ChessBoard::promotePieceIfApplicable(const Color& color, const ChessMove& chessMove)
+{
+    if (chessMove.isPromotion && pawnReachedOppositeSide(color, chessMove))
+    {
+        const int destRow = rankToRow(chessMove.destinationRank);
+        const int destCol = fileToCol(chessMove.destinationFile);
+
+        setChessPiece(destRow, destCol, {color, chessMove.promotedPiece});
+    }
+}
+
+bool ChessBoard::pawnReachedOppositeSide(const Color& color, const ChessMove& chessMove)
+{
+    if (Piece::PAWN != chessMove.piece)
+    {
+        return false;
+    }
+
+    const int destRow = rankToRow(chessMove.destinationRank);
+
+    switch (color)
+    {
+    case Color::WHITE:
+        return 0 == destRow;
+    case Color::BLACK:
+        return BOARD_SIZE - 1 == destRow;
+    default:
+        return false;
+    }
 }
 
 void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove)
