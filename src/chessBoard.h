@@ -15,6 +15,8 @@ private:
     const int BOARD_SIZE = 8;
     vector<vector<ChessPiece>> board;
 
+    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+
     bool validPosition(int row, int col) const;
 
     int rankToRow(char rank) const;
@@ -24,7 +26,7 @@ private:
 
     void setChessPiece(int row, int col, ChessPiece piece);
 
-    const ChessPiece getChessPiece(int row, int col) const;
+    const ChessPiece& getChessPiece(int row, int col) const;
 
     void applyMove(Color color, ChessMove chessMove);
 

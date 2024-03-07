@@ -10,7 +10,7 @@ using namespace std;
 
 ChessBoard::ChessBoard()
 {
-    board.resize(BOARD_SIZE, vector<ChessPiece>(BOARD_SIZE, {Color::EMPTY, Piece::EMPTY}));
+    board.resize(BOARD_SIZE, vector<ChessPiece>(BOARD_SIZE, emptyPiece));
     reset();
 }
 
@@ -35,7 +35,7 @@ void ChessBoard::setChessPiece(int row, int col, ChessPiece piece)
     }
 }
 
-const ChessPiece ChessBoard::getChessPiece(int row, int col) const
+const ChessPiece& ChessBoard::getChessPiece(int row, int col) const
 {
     if (validPosition(row, col))
     {
@@ -43,7 +43,7 @@ const ChessPiece ChessBoard::getChessPiece(int row, int col) const
     }
     else
     {
-        return {Color::EMPTY, Piece::EMPTY};
+        return emptyPiece;
     }
 }
 
@@ -188,7 +188,6 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
 void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
-    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
@@ -220,7 +219,6 @@ void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
 void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
-    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
@@ -283,13 +281,12 @@ void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
     int destCol = fileToCol(chessMove.destinationFile);
 
     setChessPiece(destRow, destCol, getChessPiece(sourceRow, sourceCol));
-    setChessPiece(sourceRow, sourceCol, {Color::EMPTY, Piece::EMPTY});
+    setChessPiece(sourceRow, sourceCol, emptyPiece);
 }
 
 void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
-    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     int row = rankToRow(chessMove.destinationRank);
     int col = fileToCol(chessMove.destinationFile);
@@ -331,14 +328,14 @@ void ChessBoard::applyMoveForKingSideCastling(Color color)
     switch (color)
     {
     case Color::WHITE:
-        setChessPiece(7, 4, {Color::EMPTY, Piece::EMPTY});
-        setChessPiece(7, 7, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 4, emptyPiece);
+        setChessPiece(7, 7, emptyPiece);
         setChessPiece(7, 6, {color, Piece::KING});
         setChessPiece(7, 5, {color, Piece::ROOK});
         break;
     case Color::BLACK:
-        setChessPiece(0, 4, {Color::EMPTY, Piece::EMPTY});
-        setChessPiece(0, 7, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 4, emptyPiece);
+        setChessPiece(0, 7, emptyPiece);
         setChessPiece(0, 6, {color, Piece::KING});
         setChessPiece(0, 5, {color, Piece::ROOK});
         break;
@@ -352,14 +349,14 @@ void ChessBoard::applyMoveForQueenSideCastling(Color color)
     switch (color)
     {
     case Color::WHITE:
-        setChessPiece(7, 4, {Color::EMPTY, Piece::EMPTY});
-        setChessPiece(7, 0, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(7, 4, emptyPiece);
+        setChessPiece(7, 0, emptyPiece);
         setChessPiece(7, 2, {color, Piece::KING});
         setChessPiece(7, 3, {color, Piece::ROOK});
         break;
     case Color::BLACK:
-        setChessPiece(0, 4, {Color::EMPTY, Piece::EMPTY});
-        setChessPiece(0, 0, {Color::EMPTY, Piece::EMPTY});
+        setChessPiece(0, 4, emptyPiece);
+        setChessPiece(0, 0, emptyPiece);
         setChessPiece(0, 2, {color, Piece::KING});
         setChessPiece(0, 3, {color, Piece::ROOK});
         break;
