@@ -106,6 +106,8 @@ vector<pair<int, int>> ChessBoard::getDirectionsForPiece(const Piece& piece) con
 {
     switch (piece)
     {
+    case Piece::PAWN:
+        return {{-1, 0}, {-1, -1}, {-1, 1}}; // Default for White pawn
     case Piece::ROOK:
         return {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     case Piece::BISHOP:
@@ -137,7 +139,18 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
         {
             if (chessPiece == getChessPiece(sourceRow, sourceCol))
             {
-                chessMove.sourceRank = rowToRank(sourceRow);
+                switch(chessPiece.piece)
+                {
+                    case Piece::PAWN: 
+                        if (!isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
+                        rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
+                        {
+                            break;
+                        }
+                    default:
+                        chessMove.sourceRank = rowToRank(sourceRow);
+                        break;
+                }
             }
         }
     }
@@ -199,8 +212,8 @@ void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& ch
     bool found = false;
     for (int i = 0; i < directions.size(); i++)
     {
-        old_col = col + directions[i].first;
-        old_row = row + directions[i].second;
+        old_row = row + directions[i].first;
+        old_col = col + directions[i].second;
 
         if (chessPiece == getChessPiece(old_row, old_col))
         {
@@ -236,8 +249,8 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
 
         while (true)
         {
-            old_col += directions[i].first;
-            old_row += directions[i].second;
+            old_row += directions[i].first;
+            old_col += directions[i].second;
 
             // Break as we cannot go further in this direction
             if (!validPosition(old_row, old_col))
@@ -321,6 +334,32 @@ void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove
         setChessPiece(index, col, emptyPiece);
         setChessPiece(row, col, chessPiece);
     }
+}
+
+bool ChessBoard::isValidMove(const Color& color, const Piece& piece, int sourceRow, int sourceCol, int destRow, int destCol) const 
+{
+    if (Piece::PAWN == piece)
+    {
+        int d = 0;
+        if (Color::WHITE == color)
+        {
+            d = 1;
+        }
+        else 
+        {
+            d = -1;
+        }
+        
+        for (const pair<int, int>& direction : getDirectionsForPiece(piece))
+        {
+            if (sourceRow + d * direction.first == destRow && sourceCol + direction.second == destCol)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 void ChessBoard::applyMoveForKingSideCastling(const Color& color)
