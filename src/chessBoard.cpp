@@ -137,20 +137,11 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
 
         for (int sourceRow = 0; sourceRow < BOARD_SIZE; sourceRow++)
         {
-            if (chessPiece == getChessPiece(sourceRow, sourceCol))
+            if (chessPiece == getChessPiece(sourceRow, sourceCol)
+            && isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
+                rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
             {
-                switch(chessPiece.piece)
-                {
-                    case Piece::PAWN: 
-                        if (!isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
-                        rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
-                        {
-                            break;
-                        }
-                    default:
-                        chessMove.sourceRank = rowToRank(sourceRow);
-                        break;
-                }
+                chessMove.sourceRank = rowToRank(sourceRow);
             }
         }
     }
@@ -338,28 +329,31 @@ void ChessBoard::applyMoveForPawn(const Color& color, const ChessMove& chessMove
 
 bool ChessBoard::isValidMove(const Color& color, const Piece& piece, int sourceRow, int sourceCol, int destRow, int destCol) const 
 {
-    if (Piece::PAWN == piece)
+    switch (piece)
     {
-        int d = 0;
-        if (Color::WHITE == color)
-        {
-            d = 1;
-        }
-        else 
-        {
-            d = -1;
-        }
-        
-        for (const pair<int, int>& direction : getDirectionsForPiece(piece))
-        {
-            if (sourceRow + d * direction.first == destRow && sourceCol + direction.second == destCol)
+        case Piece::PAWN:
+            for (const pair<int, int>& direction : getDirectionsForPiece(piece))
             {
-                return true;
+                int d = Color::WHITE == color ? 1 : -1;
+                if (sourceRow + d * direction.first == destRow && sourceCol + direction.second == destCol)
+                {
+                    return true;
+                }
             }
-        }
-    }
+            return false;
 
-    return false;
+        case Piece::KNIGHT:
+            for (const pair<int, int>& direction : getDirectionsForPiece(piece))
+            {
+                if (sourceRow + direction.first == destRow && sourceCol + direction.second == destCol)
+                {
+                    return true;
+                }
+            }
+            return false;
+        default:
+            return true;
+    }
 }
 
 void ChessBoard::applyMoveForKingSideCastling(const Color& color)
