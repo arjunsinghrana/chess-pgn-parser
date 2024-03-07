@@ -28,7 +28,7 @@ private:
 
     const ChessPiece& getChessPiece(int row, int col) const;
 
-    void applyMove(Color color, ChessMove chessMove);
+    void applyMove(const Color& color, const ChessMove& chessMove);
 
     void applyMoveWithSourceFileAndRank(const ChessMove& chessMove);
 

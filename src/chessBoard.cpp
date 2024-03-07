@@ -126,10 +126,29 @@ vector<pair<int, int>> ChessBoard::getDirectionsForPiece(const Piece& piece) con
     }
 }
 
-void ChessBoard::applyMove(Color color, ChessMove chessMove)
+void ChessBoard::applyMove(const Color& color, const ChessMove& chessMove)
 {
+    if (chessMove.isKingSideCastling)
+    {
+        applyMoveForKingSideCastling(color);
+        return;
+    }
+
+    if (chessMove.isQueenSideCastling)
+    {
+        applyMoveForQueenSideCastling(color);
+        return;
+    }
+
+    // Both Source File and Source Rank provided. Move piece.
+    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
+    {
+        applyMoveWithSourceFileAndRank(chessMove);
+        return;
+    }
+
     // Source File is provided. We can infer the Source Rank.
-    if (chessMove.sourceFile != '?' && chessMove.sourceRank == '?')
+    if ('?' != chessMove.sourceFile && '?' == chessMove.sourceRank)
     {
         const ChessPiece chessPiece = {color, chessMove.piece};
 
@@ -141,27 +160,13 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
             && isValidMove(color, chessPiece.piece, sourceRow, sourceCol, 
                 rankToRow(chessMove.destinationRank), fileToCol(chessMove.destinationFile)))
             {
-                chessMove.sourceRank = rowToRank(sourceRow);
+                ChessMove chessMoveWithSourceFileAndRank = chessMove;
+                chessMoveWithSourceFileAndRank.sourceRank = rowToRank(sourceRow);
+
+                applyMoveWithSourceFileAndRank(chessMoveWithSourceFileAndRank);
+                return;
             }
         }
-    }
-
-    if (chessMove.sourceFile != '?' && chessMove.sourceRank != '?')
-    {
-        applyMoveWithSourceFileAndRank(chessMove);
-        return;
-    }
-
-    if (chessMove.isKingSideCastling)
-    {
-        applyMoveForKingSideCastling(color);
-        return;
-    }
-
-    if (chessMove.isQueenSideCastling)
-    {
-        applyMoveForQueenSideCastling(color);
-        return;
     }
 
     switch (chessMove.piece)
@@ -193,18 +198,18 @@ void ChessBoard::applyMoveWithSingleStep(const Color& color, const ChessMove& ch
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
+    int col = fileToCol(chessMove.destinationFile);
 
-    vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
+    const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
-    int old_col = -1;
     int old_row = -1;
+    int old_col = -1;
     bool found = false;
-    for (int i = 0; i < directions.size(); i++)
+    for (const auto& direction : directions)
     {
-        old_row = row + directions[i].first;
-        old_col = col + directions[i].second;
+        old_row = row + direction.first;
+        old_col = col + direction.second;
 
         if (chessPiece == getChessPiece(old_row, old_col))
         {
@@ -224,24 +229,24 @@ void ChessBoard::applyMoveWithMultipleSteps(const Color& color, const ChessMove&
 {
     const ChessPiece chessPiece = {color, chessMove.piece};
 
-    vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
+    const vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
-    int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
+    int col = fileToCol(chessMove.destinationFile);
 
-    int old_col = -1;
     int old_row = -1;
+    int old_col = -1;
     bool found = false;
 
-    for (int i = 0; i < directions.size(); i++)
+    for (const auto& direction : directions)
     {
-        old_col = col;
         old_row = row;
+        old_col = col;
 
         while (true)
         {
-            old_row += directions[i].first;
-            old_col += directions[i].second;
+            old_row += direction.first;
+            old_col += direction.second;
 
             // Break as we cannot go further in this direction
             if (!validPosition(old_row, old_col))

@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    // Convert string containing Move Text into vector of Chess Moves
+    // Convert string containing Move Text into vector of Chess Turns
     vector<ChessTurn> turns = Utils::parseChessMoves(ss.str());
 
     ChessBoard board;
