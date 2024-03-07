@@ -213,17 +213,11 @@ void ChessBoard::applyMove(const Color& color, const ChessMove& chessMove)
         applyMoveForPawn(color, chessMove);
         break;
     case Piece::KNIGHT:
-        applyMoveWithSingleStep(color, chessMove);
-        break;
-    case Piece::BISHOP:
-        applyMoveWithMultipleSteps(color, chessMove);
-        break;
-    case Piece::ROOK:
-        applyMoveWithMultipleSteps(color, chessMove);
-        break;
     case Piece::KING:
         applyMoveWithSingleStep(color, chessMove);
         break;
+    case Piece::BISHOP:
+    case Piece::ROOK:
     case Piece::QUEEN:
         applyMoveWithMultipleSteps(color, chessMove);
         break;
