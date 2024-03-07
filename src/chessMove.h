@@ -19,8 +19,7 @@ struct ChessMove
     bool isKingSideCastling = false;
     bool isQueenSideCastling = false;
     
-    // Display contents of class
-    void display() const;
+    string toString() const;
 };
 
 #endif // CHESSMOVE_H

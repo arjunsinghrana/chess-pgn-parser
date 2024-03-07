@@ -1,16 +1,18 @@
 #include "chessTurn.h"
 
-#include <iostream>
+#include <sstream>
 
 ChessTurn::ChessTurn(int turn, ChessMove white, ChessMove black)
 : turnNumber(turn), whiteMove(white), blackMove(black) {}
 
-void ChessTurn::display() const
+string ChessTurn::toString() const
 {
-    cout << "ChessTurn: " << turnNumber << ", ";
-    cout << "White Move: ";
-    whiteMove.display();
-    cout << ", Black Move: ";
-    blackMove.display();
-    cout << endl;
+    stringstream ss;
+
+    ss << "ChessTurn: " << turnNumber << ", ";
+    ss << "White Move: " << whiteMove.toString() << ", ";
+    ss << "Black Move: " << blackMove.toString();
+    ss << endl;
+
+    return ss.str();
 }

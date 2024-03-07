@@ -14,8 +14,7 @@ public:
 
     ChessTurn(int turn, ChessMove white, ChessMove black);
 
-    // Display contents of class
-    void display() const;
+    string toString() const;
 };
 
 #endif // CHESSTURN_H

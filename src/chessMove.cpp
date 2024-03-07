@@ -2,16 +2,19 @@
 
 #include "utils.h"
 
-#include <iostream>
+#include <sstream>
 
 using namespace std;
 
-void ChessMove::display() const
+string ChessMove::toString() const
 {
-    cout << "ChessMove: {";
-    cout << "Piece: " << Utils::pieceToString(piece) << ", ";
-    cout << "Source Square: " << sourceFile << sourceRank << ", ";
-    cout << "Destination Square: " << destinationFile << destinationRank << ", ";
-    cout << "Is King Side Castling? " << (isKingSideCastling ? "Yes" : "No") << ", ";
-    cout << "Is Queen Side Castling? " << (isQueenSideCastling ? "Yes" : "No") << "}" << endl;
+    stringstream ss;
+    ss << "ChessMove: {";
+    ss << "Piece: " << Utils::pieceToString(piece) << ", ";
+    ss << "Source Square: " << sourceFile << sourceRank << ", ";
+    ss << "Destination Square: " << destinationFile << destinationRank << ", ";
+    ss << "Is King Side Castling? " << (isKingSideCastling ? "Yes" : "No") << ", ";
+    ss << "Is Queen Side Castling? " << (isQueenSideCastling ? "Yes" : "No") << "}" << endl;
+
+    return ss.str();
 }

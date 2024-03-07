@@ -76,9 +76,9 @@ int main(int argc, char* argv[])
     ChessBoard board;
     for (const auto& turn : turns)
     {
-        turn.display();
+        cout << turn.toString();
         board.applyTurn(turn);
-        board.print();
+        cout << board.toString();
     }
 
     return 0;

@@ -2,11 +2,9 @@
 
 #include "utils.h"
 
-#include <iostream>
-
+#include <sstream>
 
 using namespace std;
-
 
 ChessBoard::ChessBoard()
 {
@@ -14,17 +12,20 @@ ChessBoard::ChessBoard()
     reset();
 }
 
-void ChessBoard::print() const
+string ChessBoard::toString() const
 {
+    stringstream ss;
     for (int i = 0; i < BOARD_SIZE; ++i) 
     {
         for (int j = 0; j < BOARD_SIZE; ++j) 
         {
-            cout << Utils::chessPieceToString(getChessPiece(i, j)) << "|";
+            ss << Utils::chessPieceToString(getChessPiece(i, j)) << "|";
         }
-        cout << endl;
+        ss << endl;
     }
-    cout << endl;
+    ss << endl;
+
+    return ss.str();
 }
 
 void ChessBoard::setChessPiece(int row, int col, const ChessPiece& piece)

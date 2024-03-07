@@ -47,7 +47,7 @@ public:
     ChessBoard();
 
     void reset();
-    void print() const;
+    string toString() const;
 
     void applyTurn(const ChessTurn& turn);
 };
