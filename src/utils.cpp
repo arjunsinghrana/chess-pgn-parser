@@ -61,8 +61,8 @@ ChessMove Utils::parseSANMove(string& san)
 {
     ChessMove move;
 
-    // Remove characters from string
-    string charactersToRemove = "x#+";
+    // Remove characters for capture, check and checkmate from string
+    string charactersToRemove = "x+#";
     san = removeCharactersFromString(charactersToRemove, san);
 
     // King Side Castling
