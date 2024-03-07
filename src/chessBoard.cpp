@@ -117,7 +117,7 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
     // Source File is provided. We can infer the Source Rank.
     if (chessMove.sourceFile != '?' && chessMove.sourceRank == '?')
     {
-        ChessPiece chessPiece = {color, chessMove.piece};
+        const ChessPiece chessPiece = {color, chessMove.piece};
 
         int sourceCol = fileToCol(chessMove.sourceFile);
 
@@ -175,8 +175,8 @@ void ChessBoard::applyMove(Color color, ChessMove chessMove)
 
 void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
 {
-    ChessPiece chessPiece = {color, chessMove.piece};
-    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+    const ChessPiece chessPiece = {color, chessMove.piece};
+    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     int col = fileToCol(chessMove.destinationFile);
     int row = rankToRow(chessMove.destinationRank);
@@ -207,8 +207,8 @@ void ChessBoard::applyMoveWithSingleStep(Color color, ChessMove chessMove)
 
 void ChessBoard::applyMoveWithMultipleSteps(Color color, ChessMove chessMove)
 {
-    ChessPiece chessPiece = {color, chessMove.piece};
-    ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
+    const ChessPiece chessPiece = {color, chessMove.piece};
+    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     vector<pair<int, int>> directions = getDirectionsForPiece(chessMove.piece);
 
@@ -275,7 +275,8 @@ void ChessBoard::applyMoveWithSourceFileAndRank(ChessMove chessMove)
 
 void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 {
-    ChessPiece chessPiece = {color, chessMove.piece};
+    const ChessPiece chessPiece = {color, chessMove.piece};
+    const ChessPiece emptyPiece = {Color::EMPTY, Piece::EMPTY};
 
     int row = rankToRow(chessMove.destinationRank);
     int col = fileToCol(chessMove.destinationFile);
@@ -307,7 +308,7 @@ void ChessBoard::applyMoveForPawn(Color color, ChessMove chessMove)
 
     if (found)
     {
-        board[index][col] = {Color::EMPTY, Piece::EMPTY};
+        board[index][col] = emptyPiece;
         board[row][col] = chessPiece;
     }
 }
